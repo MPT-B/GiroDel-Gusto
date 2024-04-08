@@ -41,7 +41,8 @@ build/
 /coverage
 
 # production
-/build
+/src/main/frontend/build
+/src/main/frontend/node_modules
 
 # misc
 .DS_Store
