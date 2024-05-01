@@ -1,5 +1,7 @@
 package com.giroDelGusto.GiroDelGusto.models;
+
 import jakarta.persistence.*;
+
 @Entity
 @Table(name = "friendships")
 public class Friendship {
@@ -7,11 +9,13 @@ public class Friendship {
     @Column(name = "friendship_id")
     private Integer friendshipId;
 
-    @Column(name = "member1_id")
-    private Integer member1Id;
+    @ManyToOne
+    @JoinColumn(name = "member1_id", insertable = false, updatable = false)
+    private User member1;
 
-    @Column(name = "member2_id")
-    private Integer member2Id;
+    @ManyToOne
+    @JoinColumn(name = "member2_id", insertable = false, updatable = false)
+    private User member2;
 
     public Integer getFriendshipId() {
         return friendshipId;
@@ -21,19 +25,19 @@ public class Friendship {
         this.friendshipId = friendshipId;
     }
 
-    public Integer getMember1Id() {
-        return member1Id;
+    public User getMember1() {
+        return member1;
     }
 
-    public void setMember1Id(Integer member1Id) {
-        this.member1Id = member1Id;
+    public void setMember1(User member1) {
+        this.member1 = member1;
     }
 
-    public Integer getMember2Id() {
-        return member2Id;
+    public User getMember2() {
+        return member2;
     }
 
-    public void setMember2Id(Integer member2Id) {
-        this.member2Id = member2Id;
+    public void setMember2(User member2) {
+        this.member2 = member2;
     }
 }

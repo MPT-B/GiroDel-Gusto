@@ -23,6 +23,16 @@ public class ReviewController {
         return reviewService.getAllReviews();
     }
 
+    @GetMapping("/user/{userId}")
+    public List<Review> getReviewsByUserId(@PathVariable Integer userId) {
+        return reviewService.getReviewsByUserId(userId);
+    }
+
+    @GetMapping("/restaurant/{restaurantId}")
+    public List<Review> getReviewsByRestaurantId(@PathVariable Integer restaurantId) {
+        return reviewService.getReviewsByRestaurantId(restaurantId);
+    }
+
     @PostMapping
     public Review addReview(@RequestBody Review review) {
         return reviewService.addReview(review);
@@ -30,7 +40,7 @@ public class ReviewController {
 
     @PutMapping
     public Review editReview(@RequestBody Review review) {
-        return reviewService.editReview(review);
+        return reviewService.updateReview(review);
     }
 
     @DeleteMapping("/{id}")

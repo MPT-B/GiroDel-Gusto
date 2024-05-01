@@ -1,6 +1,11 @@
 package com.giroDelGusto.GiroDelGusto.controllers;
 
+import com.giroDelGusto.GiroDelGusto.auth.SignupRequest;
+import com.giroDelGusto.GiroDelGusto.models.Restaurant;
+import com.giroDelGusto.GiroDelGusto.models.Review;
 import com.giroDelGusto.GiroDelGusto.models.User;
+import com.giroDelGusto.GiroDelGusto.services.RestaurantService;
+import com.giroDelGusto.GiroDelGusto.services.ReviewService;
 import com.giroDelGusto.GiroDelGusto.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,42 +18,48 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private final ReviewService reviewService;
+    private final RestaurantService restaurantService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ReviewService reviewService, RestaurantService restaurantService) {
         this.userService = userService;
+        this.reviewService = reviewService;
+        this.restaurantService = restaurantService;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    // Pobieranie użytkownika po UUID
     @GetMapping("/{userId}")
-    public String getUser(@PathVariable UUID userId) {
-        // Tutaj logika do pobrania użytkownika z bazy danych używając userId
-        return "User with ID: " + userId;
+    public User getUser(@PathVariable Integer userId) {
+        return userService.getUserById(userId);
     }
 
-    // Tworzenie nowego użytkownika
     @PostMapping
-    public String createUser() {
-        // Logika do tworzenia nowego użytkownika
-        return "User created";
+    public User createUser(@RequestBody SignupRequest signupRequest) {
+        return userService.createUser(signupRequest);
     }
 
-    // Aktualizacja użytkownika
     @PutMapping("/{userId}")
-    public String updateUser(@PathVariable UUID userId) {
-        // Logika do aktualizacji użytkownika
-        return "User with ID: " + userId + " updated";
+    public User updateUser(@PathVariable Integer userId, @RequestBody User user) {
+        return userService.updateUser(userId, user);
     }
 
-    // Usuwanie użytkownika
     @DeleteMapping("/{userId}")
-    public String deleteUser(@PathVariable UUID userId) {
-        // Logika do usunięcia użytkownika
-        return "User with ID: " + userId + " deleted";
+    public void deleteUser(@PathVariable Integer userId) {
+        userService.deleteUser(userId);
+    }
+
+    @GetMapping("/{userId}/reviews")
+    public List<Review> getUserReviews(@PathVariable Integer userId) {
+        return reviewService.getReviewsByUserId(userId);
+    }
+
+    @GetMapping("/{userId}/favoriteRestaurants")
+    public List<Restaurant> getUserFavoriteRestaurants(@PathVariable Integer userId) {
+        return restaurantService.getRestaurantsByFavorite(userId);
     }
 }

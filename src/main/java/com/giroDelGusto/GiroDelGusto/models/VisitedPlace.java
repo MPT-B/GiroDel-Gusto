@@ -1,4 +1,5 @@
 package com.giroDelGusto.GiroDelGusto.models;
+
 import jakarta.persistence.*;
 
 import java.sql.Date;
@@ -10,11 +11,13 @@ public class VisitedPlace {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
 
-    @Column(name = "restaurant_id")
-    private Integer restaurantId;
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id", insertable = false, updatable = false)
+    private Restaurant restaurant;
 
     @Column(name = "visit_date", nullable = false)
     private Date visitDate;
@@ -27,20 +30,20 @@ public class VisitedPlace {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Integer getRestaurantId() {
-        return restaurantId;
+    public Restaurant getRestaurant() {
+        return restaurant;
     }
 
-    public void setRestaurantId(Integer restaurantId) {
-        this.restaurantId = restaurantId;
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     public Date getVisitDate() {

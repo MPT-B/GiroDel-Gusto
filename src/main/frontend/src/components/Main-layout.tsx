@@ -7,6 +7,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import AppAppBar from "./AppAppBar";
 import Footer from "./Footer";
 import getLPTheme from "../styles/getLPTheme";
+import { Outlet } from "react-router-dom";
 
 interface ToggleCustomThemeProps {
   showCustomTheme: Boolean;
@@ -31,11 +32,7 @@ function ToggleCustomTheme({
   );
 }
 
-export default function MainLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function MainLayout() {
   const [mode, setMode] = React.useState<PaletteMode>("light");
   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
   const LPtheme = createTheme(getLPTheme(mode));
@@ -54,7 +51,7 @@ export default function MainLayout({
       <CssBaseline />
       <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
       <Box sx={{ bgcolor: "background.default" }}>
-        {children} {}
+        <Outlet />
       </Box>
       <Footer />
 

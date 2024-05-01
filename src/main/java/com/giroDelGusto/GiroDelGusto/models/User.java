@@ -1,7 +1,18 @@
 package com.giroDelGusto.GiroDelGusto.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Data
 @Entity
 @Table(name = "users")
 public class User {
@@ -9,6 +20,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "profile_id")
+    @JsonManagedReference
+    private Profile profile;
 
     @Column(nullable = false)
     private String email;
@@ -22,6 +38,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
+
+    @Column(name = "profile_id", insertable = false, updatable = false)
+    private Integer profileId;
+
 
     public Integer getId() {
         return id;
@@ -62,4 +82,13 @@ public class User {
     public void setRole(UserRole role) {
         this.role = role;
     }
+
+//    public Profile getProfile() {
+//        return profile;
+//    }
+//
+//    public void setProfile(Profile profile) {
+//        this.profile = profile;
+//    }
+
 }

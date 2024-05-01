@@ -1,29 +1,44 @@
+// UserCuisinePreference.java
 package com.giroDelGusto.GiroDelGusto.models;
 
 import jakarta.persistence.*;
+
 @Entity
 @Table(name = "user_cuisine_preferences")
 public class UserCuisinePreference {
     @Id
-    @Column(name = "user_id")
-    private Integer userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Column(name = "cuisine_id")
-    private Integer cuisineId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
 
-    public Integer getUserId() {
-        return userId;
+    @ManyToOne
+    @JoinColumn(name = "cuisine_id", insertable = false, updatable = false)
+    private CuisineType cuisineType;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Integer getCuisineId() {
-        return cuisineId;
+    public User getUser() {
+        return user;
     }
 
-    public void setCuisineId(Integer cuisineId) {
-        this.cuisineId = cuisineId;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public CuisineType getCuisineType() {
+        return cuisineType;
+    }
+
+    public void setCuisineType(CuisineType cuisineType) {
+        this.cuisineType = cuisineType;
     }
 }

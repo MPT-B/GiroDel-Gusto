@@ -1,9 +1,11 @@
 package com.giroDelGusto.GiroDelGusto.controllers;
 
+import com.giroDelGusto.GiroDelGusto.models.Restaurant;
 import com.giroDelGusto.GiroDelGusto.models.RestaurantCuisine;
 import com.giroDelGusto.GiroDelGusto.services.RestaurantCuisineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,5 +25,9 @@ public class RestaurantCuisineController {
         return restaurantCuisineService.getAllRestaurantCuisines();
     }
 
-    // Add other methods as needed
+    @GetMapping("/restaurantCuisines/{restaurantCuisineId}")
+    public List<Restaurant> getRestaurantByCuisine(@PathVariable Integer restaurantCuisineId) {
+        return restaurantCuisineService.getRestaurantByCuisine(restaurantCuisineId);
+    }
+
 }

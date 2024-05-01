@@ -21,5 +21,7 @@ public class CuisineTypeService {
         return cuisineTypeRepository.findAll();
     }
 
-    // Add other methods as needed
+    public CuisineType getCuisineTypeById(Integer cuisineTypeId) {
+        return cuisineTypeRepository.findById(cuisineTypeId).orElse(null);
+    }
 }

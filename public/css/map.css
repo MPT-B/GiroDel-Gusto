@@ -1,0 +1,101 @@
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.foodfilter {
+  display: flex;
+  justify-content: start;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  white-space: nowrap;
+  margin: 15px;
+}
+
+.foodfilter-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 35%;
+  background-color: #fff;
+  cursor: pointer;
+  overflow: hidden;
+  scroll-snap-align: start;
+  width: 60px;
+  max-width: 60px;
+  font-size: 0.8em;
+  min-width: 30px;
+}
+
+.foodfilter-item img {
+  width: 8vw;
+  max-width: 40px;
+  height: auto;
+  margin-bottom: 5px;
+}
+
+.foodfilter-item span {
+  color: #333;
+  font-size: 1em;
+}
+
+.foodfilter-item:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fdb648;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  transform: scaleY(0);
+  transform-origin: center;
+  opacity: 0;
+  z-index: 0;
+}
+
+.foodfilter-item:hover:after {
+  transform: scaleY(1);
+  opacity: 1;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.foodfilter-item img {
+  z-index: 1;
+  position: relative;
+}
+
+.foodfilter-item span {
+  z-index: 1;
+  position: relative;
+}
+
+.active {
+  font-weight: bold;
+  background: #fdb648;
+  color: #fff;
+}
+
+#map-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40vh;
+  width: 80%;
+  margin: 150px auto;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}

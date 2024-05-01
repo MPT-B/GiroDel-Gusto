@@ -11,7 +11,8 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function Copyright(props: any) {
   return (
@@ -31,15 +32,49 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get("username"),
-      email: data.get("email"),
-      password: data.get("password"),
-      repassword: data.get("retypePassword"),
-    });
+    const username = data.get("username");
+    const email = data.get("email");
+    const password = data.get("password");
+    const repassword = data.get("repassword");
+
+    // Simple client-side validation for example purposes
+    if (password !== repassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://127.0.0.1:8080/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Signup failed");
+      }
+
+      // Assuming the server responds with the created user or a success message
+      const result = await response.json();
+      console.log("Signup Success:", result);
+      // Redirect user after successful signup
+      navigate("/login");
+    } catch (error) {
+      console.error("Signup Error:", error);
+      setError("Signup failed. Please try again.");
+    }
   };
 
   return (

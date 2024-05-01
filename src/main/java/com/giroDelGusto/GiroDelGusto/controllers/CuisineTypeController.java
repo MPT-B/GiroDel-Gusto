@@ -4,6 +4,7 @@ import com.giroDelGusto.GiroDelGusto.models.CuisineType;
 import com.giroDelGusto.GiroDelGusto.services.CuisineTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,5 +24,8 @@ public class CuisineTypeController {
         return cuisineTypeService.getAllCuisineTypes();
     }
 
-    // Add other methods as needed
+    @GetMapping("/cuisineTypes/{cuisineTypeId}")
+    public CuisineType getCuisineTypeById(@PathVariable Integer cuisineTypeId) {
+        return cuisineTypeService.getCuisineTypeById(cuisineTypeId);
+    }
 }

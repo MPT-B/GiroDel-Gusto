@@ -1,0 +1,42 @@
+#search-area {
+  margin: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.search__input {
+  width: 60%;
+  max-width: 400px;
+  padding: 12px 24px;
+  background-color: transparent;
+  transition: transform 250ms ease-in-out;
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
+  background-color: #5a5a5a3f;
+  border-radius: 50px;
+  border: 1px solid #575756;
+  transition: all 250ms ease-in-out;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.search__input::placeholder {
+  color: rgba(78, 78, 78, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.search__input:hover,
+.search__input:focus {
+  padding: 12px 0;
+  outline: 0;
+  border: 1px solid transparent;
+  border-bottom: 1px solid #fdb648;
+  border-radius: 0;
+  background-position: 100% center;
+}
+#restaurant-content {
+  margin: 20px;
+}

@@ -1,5 +1,7 @@
 package com.giroDelGusto.GiroDelGusto.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -7,8 +9,8 @@ import jakarta.persistence.*;
 public class Profile {
 
     @Id
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column
     private String bio;
@@ -19,13 +21,10 @@ public class Profile {
     @Column(name = "visited_places", nullable = false)
     private Long visitedPlaces = 0L;
 
-    public Integer getUserId() {
-        return userId;
-    }
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private User user;
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public String getBio() {
         return bio;
@@ -57,5 +56,9 @@ public class Profile {
 
     public void updateBio(String newBio) {
         this.bio = newBio;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

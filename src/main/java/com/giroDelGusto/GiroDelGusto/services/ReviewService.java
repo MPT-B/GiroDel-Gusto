@@ -21,11 +21,19 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
+    public List<Review> getReviewsByUserId(Integer userId) {
+        return reviewRepository.findByUserId(userId);
+    }
+
+    public List<Review> getReviewsByRestaurantId(Integer restaurantId) {
+        return reviewRepository.findByRestaurantId(restaurantId);
+    }
+
     public Review addReview(Review review) {
         return reviewRepository.save(review);
     }
 
-    public Review editReview(Review review) {
+    public Review updateReview(Review review) {
         return reviewRepository.save(review);
     }
 

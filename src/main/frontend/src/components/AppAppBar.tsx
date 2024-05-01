@@ -14,7 +14,7 @@ import ToggleColorMode from "./ToggleColorMode";
 import { Link } from "react-router-dom";
 
 const logoStyle = {
-  width: "140px",
+  width: "60px",
   height: "auto",
   cursor: "pointer",
 };
@@ -75,7 +75,11 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               }}
             >
               <img
-                src="../../../../../public/data/Logo.png"
+                src={
+                  mode === "light"
+                    ? "/data/Logo_dark.png"
+                    : "/data/Logo_light.png"
+                }
                 style={logoStyle}
                 alt="logo of GiroDelGusto"
               />
@@ -140,8 +144,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="text"
                 size="small"
                 component="a"
-                href="/material-ui/getting-started/templates/sign-in/"
-                target="_blank"
+                href="/login"
               >
                 Sign in
               </Button>
@@ -150,8 +153,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="contained"
                 size="small"
                 component="a"
-                href="/material-ui/getting-started/templates/sign-up/"
-                target="_blank"
+                href="/signup"
               >
                 Sign up
               </Button>

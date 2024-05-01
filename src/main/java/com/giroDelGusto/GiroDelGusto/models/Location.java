@@ -1,5 +1,7 @@
 package com.giroDelGusto.GiroDelGusto.models;
+
 import jakarta.persistence.*;
+
 @Entity
 @Table(name = "locations")
 public class Location {
@@ -10,8 +12,9 @@ public class Location {
     @Column(nullable = false)
     private String address;
 
-    @Column(name = "city_id")
-    private Integer cityId;
+    @ManyToOne
+    @JoinColumn(name = "city_id", insertable = false, updatable = false)
+    private City city;
 
     public Integer getId() {
         return id;
@@ -29,11 +32,11 @@ public class Location {
         this.address = address;
     }
 
-    public Integer getCityId() {
-        return cityId;
+    public City getCity() {
+        return city;
     }
 
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
+    public void setCity(City city) {
+        this.city = city;
     }
 }

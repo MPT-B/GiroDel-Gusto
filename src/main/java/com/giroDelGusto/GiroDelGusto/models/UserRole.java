@@ -1,7 +1,14 @@
 package com.giroDelGusto.GiroDelGusto.models;
 
-public enum UserRole {
-    NORMAL,
-    ADMIN,
-    RESTAURATEUR
+import org.springframework.security.core.GrantedAuthority;
+
+public enum UserRole implements GrantedAuthority {
+    normal,
+    admin,
+    restaurateur;
+
+    @Override
+    public String getAuthority(){
+        return this.name();
+    }
 }

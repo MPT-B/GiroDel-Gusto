@@ -4,25 +4,38 @@ import jakarta.persistence.*;
 @Table(name = "favorite_restaurants")
 public class FavoriteRestaurant {
     @Id
-    @Column(name = "user_id")
-    private Integer userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Column(name = "restaurant_id")
-    private Integer restaurantId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    public Integer getUserId() {
-        return userId;
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    private Restaurant restaurant;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Integer getRestaurantId() {
-        return restaurantId;
+    public User getUser() {
+        return user;
     }
 
-    public void setRestaurantId(Integer restaurantId) {
-        this.restaurantId = restaurantId;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 }

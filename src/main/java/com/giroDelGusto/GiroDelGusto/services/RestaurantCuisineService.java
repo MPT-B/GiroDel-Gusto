@@ -1,5 +1,6 @@
 package com.giroDelGusto.GiroDelGusto.services;
 
+import com.giroDelGusto.GiroDelGusto.models.Restaurant;
 import com.giroDelGusto.GiroDelGusto.models.RestaurantCuisine;
 import com.giroDelGusto.GiroDelGusto.repositories.RestaurantCuisineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,7 @@ public class RestaurantCuisineService {
         return restaurantCuisineRepository.findAll();
     }
 
-    // Add other methods as needed
+    public List<Restaurant> getRestaurantByCuisine(Integer cuisineTypeId) {
+        return restaurantCuisineRepository.findRestaurantsByCuisineTypeId(cuisineTypeId);
+    }
 }

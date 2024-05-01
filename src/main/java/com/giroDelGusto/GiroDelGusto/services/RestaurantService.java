@@ -21,21 +21,30 @@ public class RestaurantService {
         return restaurantRepository.findAll();
     }
 
-    public List<Restaurant> getRestaurantsByFavorite(Integer userId) {
-        return restaurantRepository.findByFavoriteRestaurantsUserId(userId);
+    public Restaurant getRestaurantById(Integer id) {
+        return restaurantRepository.findById(id).orElse(null);
     }
 
-    public List<Restaurant> getRestaurantsByCuisine(Integer cuisineTypeId) {
-        return restaurantRepository.findByRestaurantCuisinesCuisineTypeId(cuisineTypeId);
-    }
-
-    public Restaurant addRestaurant(Restaurant restaurant) {
+    public Restaurant createRestaurant(Restaurant restaurant) {
         return restaurantRepository.save(restaurant);
     }
 
-    public Restaurant getRestaurantByName(String name) {
-        return restaurantRepository.findByName(name);
+    public Restaurant updateRestaurant(Integer id, Restaurant restaurantDetails) {
+        Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
+        if (restaurant != null) {
+            restaurant.setName(restaurantDetails.getName());
+            restaurant.setLocation(restaurantDetails.getLocation());
+            restaurant.setImagePath(restaurantDetails.getImagePath());
+            restaurantRepository.save(restaurant);
+        }
+        return restaurant;
     }
 
-    // Add other methods as needed
+    public void deleteRestaurant(Integer id) {
+        restaurantRepository.deleteById(id);
+    }
+
+    public List<Restaurant> getRestaurantsByFavorite(Integer userId) {
+        return restaurantRepository.findByFavoriteRestaurantsUserId(userId);
+    }
 }
