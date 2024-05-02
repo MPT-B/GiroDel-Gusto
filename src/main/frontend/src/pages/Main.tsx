@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import RestaurantCard from "../components/RestaurantCard";
 import { Restaurant } from "../models/restaurant.model";
 import { Grid, Typography } from "@mui/material";
 import "../styles/main.css";
+import { API_URL } from "../env";
+import axios from "axios";
 
 const Main: React.FC = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
-  // useEffect(() => {
-  //   axios
-  //     .get("http://127.0.0.1:8080/restaurants")
-  //     .then((response) => {
-  //       setRestaurants(response.data);
-  //     })
-  //     .catch((error) => console.error("Error:", error));
-  // }, []);
-
   useEffect(() => {
-    fetch("http://127.0.0.1:8080/restaurants")
-      .then((response) => response.json())
-      .then((data: Restaurant[]) => setRestaurants(data))
-      .catch((error) => console.error("error"));
+    axios
+      .get(`${API_URL}/restaurants`)
+      .then((response) => {
+        setRestaurants(response.data);
+      })
+      .catch((error) => console.error("error", error));
   }, []);
 
   return (
@@ -30,7 +24,7 @@ const Main: React.FC = () => {
       spacing={2}
       style={{
         justifyContent: "center",
-        marginTop: "15vh",
+        marginTop: "12vh",
         paddingInline: "3rem",
       }}
     >
@@ -43,9 +37,12 @@ const Main: React.FC = () => {
             md={4}
             lg={2}
             key={index}
-            style={{ display: "flex", justifyContent: "center" }}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
           >
-            <div>
+            <div style={{ width: "100%", height: "100%" }}>
               <RestaurantCard
                 key={restaurant.id}
                 title={restaurant.name}
@@ -56,9 +53,11 @@ const Main: React.FC = () => {
           </Grid>
         ))
       ) : (
-        <Typography variant="h6" style={{ margin: "20px" }}>
-          No restaurants found.
-        </Typography>
+        <Grid item xs={12}>
+          <Typography variant="h6" style={{ margin: "20px" }}>
+            No restaurants found.
+          </Typography>
+        </Grid>
       )}
     </Grid>
   );

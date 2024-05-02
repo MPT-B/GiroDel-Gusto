@@ -1,39 +1,27 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import React, { useState } from "react";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+  ThemeProvider,
+} from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <span>GiroDelGusto</span> {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-const defaultTheme = createTheme();
+import { useTheme } from "@emotion/react";
+import { API_URL } from "../env";
+import { Copyright } from "@mui/icons-material";
 
 export default function SignUp() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -43,42 +31,27 @@ export default function SignUp() {
     const password = data.get("password");
     const repassword = data.get("repassword");
 
-    // Simple client-side validation for example purposes
     if (password !== repassword) {
       setError("Passwords do not match");
       return;
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:8080/signup", {
+      const response = await fetch(`${API_URL}/signup`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password }),
       });
 
-      if (!response.ok) {
-        throw new Error("Signup failed");
-      }
-
-      // Assuming the server responds with the created user or a success message
-      const result = await response.json();
-      console.log("Signup Success:", result);
-      // Redirect user after successful signup
+      if (!response.ok) throw new Error("Signup failed");
       navigate("/login");
     } catch (error) {
-      console.error("Signup Error:", error);
       setError("Signup failed. Please try again.");
     }
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -89,10 +62,6 @@ export default function SignUp() {
           sx={{
             backgroundImage: "url('../giro.webp')",
             backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -111,7 +80,7 @@ export default function SignUp() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign Up
             </Typography>
             <Box
               component="form"
@@ -138,7 +107,6 @@ export default function SignUp() {
                 name="email"
                 autoComplete="email"
               />
-
               <TextField
                 margin="normal"
                 required
@@ -154,7 +122,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 name="repassword"
-                label="Password"
+                label="Repeat Password"
                 type="password"
                 id="repassword"
               />
@@ -168,14 +136,13 @@ export default function SignUp() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Sign Up
               </Button>
               <Grid container>
                 <Grid item>
                   <Link to="/login">{"Already have an account? Log In"}</Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>

@@ -4,26 +4,28 @@ import CuisineFilter from "../components/CuisineFilter";
 import RestaurantCard from "../components/RestaurantCard";
 import { useFetchData } from "../hooks/fetchData";
 import axios from "axios";
-import { getAuthToken } from "../auth/authToken";
-import { CuisineType } from "../models/cuisine.model";
+import { getAuthToken } from "../auth/AuthToken";
 import { Restaurant } from "../models/restaurant.model";
+import { API_URL } from "../env";
 
 const RestaurantList: React.FC = () => {
   const [selectedCuisineId, setSelectedCuisineId] = useState<number | null>(
     null
   );
-  const { data: cuisineTypes } = useFetchData(
-    "http://localhost:8080/cuisineTypes"
+  const { data: cuisineTypes, isLoading: isLoadingCuisines } = useFetchData(
+    `${API_URL}/cuisineTypes`
   );
 
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>(
+    [] as Restaurant[]
+  );
 
   useEffect(() => {
     if (selectedCuisineId) {
       const fetchRestaurants = async () => {
         try {
           const response = await axios.get<Restaurant[]>(
-            `http://localhost:8080/restaurantCuisines/${selectedCuisineId}`,
+            `${API_URL}/restaurantCuisines/${selectedCuisineId}`,
             {
               headers: {
                 Authorization: `Bearer ${getAuthToken()}`,
@@ -45,7 +47,7 @@ const RestaurantList: React.FC = () => {
   };
 
   return (
-    <div>
+    <div style={{ marginTop: "10vh" }}>
       <CuisineFilter
         cuisineTypes={cuisineTypes || []}
         onCuisineClick={handleCuisineClick}
@@ -56,6 +58,10 @@ const RestaurantList: React.FC = () => {
         spacing={2}
         className="restaurantGrid"
         justifyContent="center"
+        style={{
+          justifyContent: "center",
+          paddingInline: "3rem",
+        }}
       >
         {restaurants.length > 0 ? (
           restaurants.map((restaurant) => (

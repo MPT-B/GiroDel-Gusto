@@ -1,85 +1,45 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import Typography from "@mui/material/Typography";
-import { setAuthHeader } from "../services/BackendService";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <span>GiroDelGusto</span> {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import FormField from "../components/FormField";
+import AuthButton from "../components/AuthButton";
+import { setAuthHeader } from "../services/BackendService";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import {
+  Avatar,
+  Box,
+  CssBaseline,
+  Grid,
+  Paper,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
+import { handleAuthRequest } from "../auth/AuthRequest";
 
 const defaultTheme = createTheme();
 
 const Login = () => {
-  const Auth = useAuth();
-  const isLoggedIn = Auth.isAuthenticated();
-
-  console.log("islogged " + isLoggedIn);
-
   const [username, setUsername] = useState("CreativeUser1");
   const [password, setPassword] = useState("kwakwa");
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const requestBody = JSON.stringify({
-      username: username,
-      password: password,
-    });
-    console.log("Sending request body:", requestBody); // Log the request body
+    const data = new FormData(event.currentTarget);
+    const username = data.get("username");
+    const password = data.get("password");
 
-    fetch("http://localhost:8080/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: requestBody,
-    })
-      .then((response) => {
-        if (response.status == 200) {
-          return response.json();
-        } else {
-          return null;
-        }
-      })
-      .then((data) => {
-        if (data !== null) {
-          setAuthHeader(data["token"]);
-          console.log(data["token"]);
-          navigate("/main");
-        } else {
-          setAuthHeader(null);
-        }
-      });
+    const result = await handleAuthRequest("login", { username, password });
+
+    if (result.success) {
+      setAuthHeader(result.data.token);
+      window.location.href = "/main";
+    } else {
+      throw Error(result.error);
+    }
   };
-
-  if (isLoggedIn) {
-    return <Navigate to={"/main"} />;
-  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -117,58 +77,36 @@ const Login = () => {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleLogin}
-              sx={{ mt: 1 }}
-            >
-              <TextField
-                margin="normal"
-                required
-                fullWidth
+          </Box>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <form onSubmit={handleLogin}>
+              <FormField
                 id="username"
                 label="Username"
                 name="username"
                 autoComplete="username"
-                autoFocus
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
+              <FormField
                 id="password"
+                label="Password"
+                name="password"
+                type="password"
                 autoComplete="current-password"
-                value={password} // Set value from state
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link to="/signup">Forgot password?</Link>
-                </Grid>
-                <Grid item>
-                  <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
-                </Grid>
-              </Grid>
-              <Copyright sx={{ mt: 5 }} />
-            </Box>
+              <AuthButton>Sign In</AuthButton>
+            </form>
           </Box>
         </Grid>
       </Grid>

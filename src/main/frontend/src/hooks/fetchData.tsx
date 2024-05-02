@@ -1,25 +1,70 @@
 // hooks/useFetchData.js
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { getAuthToken } from "../auth/authToken";
+import { getAuthToken } from "../auth/AuthToken";
 
-/**
- * Custom hook for fetching data with authorization token.
- * @param {string} url The URL to fetch from.
- */
-export const useFetchData = (url: string) => {
+interface FetchOptions {
+  method?: "GET" | "POST" | "PUT" | "DELETE";
+  body?: any;
+  headers?: Record<string, string>;
+}
+
+export const useFetchData = (url: string, options?: FetchOptions) => {
   const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const token = getAuthToken();
-    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+    const fetchData = async () => {
+      setIsLoading(true);
+      const token = getAuthToken();
+      const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
+      const config = {
+        method: options?.method || "GET",
+        headers: {
+          ...authHeaders,
+          ...options?.headers,
+          "Content-Type": "application/json",
+        },
+        data: options?.body ? JSON.stringify(options.body) : null,
+      };
 
-    axios
-      .get(url, { headers })
-      .then((response) => setData(response.data))
-      .catch((error) => setError(error));
-  }, [url]);
+      try {
+        const response = await axios(url, config);
+        setData(response.data);
+      } catch (error: any) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  return { data, error };
+    fetchData();
+  }, [url, options]);
+
+  return { data, isLoading, error };
 };
+// export const useFetchData = (url: string) => {
+//   const [data, setData] = useState(null);
+//   const [isLoading, setIsLoading] = useState(true);
+//   const [error, setError] = useState(null);
+
+//   useEffect(() => {
+//     setIsLoading(true);
+//     const token = getAuthToken();
+//     const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+//     axios
+//       .get(url, { headers })
+//       .then((response) => {
+//         setData(response.data);
+//         setIsLoading(false);
+//       })
+//       .catch((error) => {
+//         setError(error);
+//         setIsLoading(false);
+//       });
+//   }, [url]);
+
+//   return { data, isLoading, error };
+// };

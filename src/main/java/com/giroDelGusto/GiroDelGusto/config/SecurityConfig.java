@@ -74,7 +74,8 @@ public class SecurityConfig{
             "/login",
             "/signup",
             "/restaurants",
-            "/friends/user/1"
+            "/friends/user/1",
+            "/users/me"
     };
 
     @Bean

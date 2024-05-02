@@ -1,11 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-interface User {
-  id: string;
-  role: "admin" | "normal" | "resturator";
-  username: string;
-}
-
 interface AuthContextType {
   authToken: string | null;
   isAuthenticated: () => boolean;
@@ -21,7 +15,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     setAuthToken(token);
-  }, []);
+  }, [authToken]);
 
   const isAuthenticated = (): boolean => {
     const token = localStorage.getItem("auth_token");

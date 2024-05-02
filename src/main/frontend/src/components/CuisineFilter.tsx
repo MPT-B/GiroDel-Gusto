@@ -10,7 +10,6 @@ const CuisineItem = styled(Paper)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   margin: theme.spacing(1),
-  marginTop: "13vh",
   padding: theme.spacing(2),
   borderRadius: "35%",
   backgroundColor:

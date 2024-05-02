@@ -12,6 +12,10 @@ import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import ToggleColorMode from "./ToggleColorMode";
 import { Link } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
+import { LogoutButton } from "../auth/Logout";
+import { fetchUserDetails } from "../auth/GetUser";
+import { useEffect, useState } from "react";
 
 const logoStyle = {
   width: "60px",
@@ -25,8 +29,22 @@ interface AppAppBarProps {
 }
 
 function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const [userInfo, setUserInfo] = useState<{ username: string } | null>(null);
 
+  useEffect(() => {
+    const getUser = async () => {
+      const userDetails = await fetchUserDetails();
+      if (userDetails) {
+        setUserInfo({ username: userDetails.username });
+      }
+    };
+
+    getUser();
+  }, []);
+
+  const userLoggedIn = isAuthenticated();
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
@@ -42,7 +60,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
           mt: 2,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" style={{ marginBottom: "15px" }}>
           <Toolbar
             variant="regular"
             sx={(theme) => ({
@@ -139,24 +157,41 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               }}
             >
               <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
-              <Button
-                color="primary"
-                variant="text"
-                size="small"
-                component="a"
-                href="/login"
-              >
-                Sign in
-              </Button>
-              <Button
-                color="primary"
-                variant="contained"
-                size="small"
-                component="a"
-                href="/signup"
-              >
-                Sign up
-              </Button>
+              {userLoggedIn && userInfo ? (
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <Button
+                    color="primary"
+                    variant="text"
+                    size="small"
+                    component="a"
+                    href="/userProfile"
+                  >
+                    {userInfo.username}
+                  </Button>
+                  <LogoutButton />
+                </Box>
+              ) : (
+                <div>
+                  <Button
+                    color="primary"
+                    variant="text"
+                    size="small"
+                    component="a"
+                    href="/login"
+                  >
+                    Sign in
+                  </Button>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    size="small"
+                    component="a"
+                    href="/signup"
+                  >
+                    Sign up
+                  </Button>
+                </div>
+              )}
             </Box>
             <Box sx={{ display: { sm: "", md: "none" } }}>
               <Button
@@ -206,30 +241,44 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                     Friends
                   </MenuItem>
                   <Divider />
-                  <MenuItem>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      component="a"
-                      href="/material-ui/getting-started/templates/sign-up/"
-                      target="_blank"
-                      sx={{ width: "100%" }}
-                    >
-                      Sign up
-                    </Button>
-                  </MenuItem>
-                  <MenuItem>
-                    <Button
-                      color="primary"
-                      variant="outlined"
-                      component="a"
-                      href="/material-ui/getting-started/templates/sign-in/"
-                      target="_blank"
-                      sx={{ width: "100%" }}
-                    >
-                      Sign in
-                    </Button>
-                  </MenuItem>
+                  {userLoggedIn && userInfo ? (
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <MenuItem>
+                        <Typography color="text.primary">
+                          {userInfo.username}
+                        </Typography>
+                      </MenuItem>
+
+                      <MenuItem>
+                        <LogoutButton />
+                      </MenuItem>
+                    </Box>
+                  ) : (
+                    <div>
+                      <MenuItem>
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          component="a"
+                          href="/login"
+                          sx={{ width: "100%" }}
+                        >
+                          Sign in
+                        </Button>
+                      </MenuItem>
+                      <MenuItem>
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          component="a"
+                          href="/signup"
+                          sx={{ width: "100%" }}
+                        >
+                          Sign up
+                        </Button>
+                      </MenuItem>
+                    </div>
+                  )}
                 </Box>
               </Drawer>
             </Box>

@@ -1,6 +1,7 @@
 package com.giroDelGusto.GiroDelGusto.controllers;
 
 import com.giroDelGusto.GiroDelGusto.auth.SignupRequest;
+import com.giroDelGusto.GiroDelGusto.dtos.UserDto;
 import com.giroDelGusto.GiroDelGusto.models.Restaurant;
 import com.giroDelGusto.GiroDelGusto.models.Review;
 import com.giroDelGusto.GiroDelGusto.models.User;
@@ -8,6 +9,8 @@ import com.giroDelGusto.GiroDelGusto.services.RestaurantService;
 import com.giroDelGusto.GiroDelGusto.services.ReviewService;
 import com.giroDelGusto.GiroDelGusto.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,5 +64,19 @@ public class UserController {
     @GetMapping("/{userId}/favoriteRestaurants")
     public List<Restaurant> getUserFavoriteRestaurants(@PathVariable Integer userId) {
         return restaurantService.getRestaurantsByFavorite(userId);
+    }
+
+    @GetMapping("/me")
+    public UserDto getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() instanceof UserDto) {
+            UserDto userDto = (UserDto) authentication.getPrincipal();
+            String currentUserName = userDto.getUsername();
+            System.out.println(userService.getUserByUsername(currentUserName));
+
+            return userService.getUserByUsername(currentUserName);
+        } else {
+            throw new RuntimeException("Authentication principal is not of type UserDto");
+        }
     }
 }
