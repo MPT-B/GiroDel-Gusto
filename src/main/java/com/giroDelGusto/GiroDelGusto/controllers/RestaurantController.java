@@ -51,4 +51,9 @@ public class RestaurantController {
     public List<Review> getRestaurantReviews(@PathVariable Integer restaurantId) {
         return reviewService.getReviewsByRestaurantId(restaurantId);
     }
+
+    @GetMapping("/town/{town}")
+    public List<Restaurant> getRestaurantsByTown(@PathVariable String town) {
+        return restaurantService.getRestaurantsByTown(town);
+    }
 }

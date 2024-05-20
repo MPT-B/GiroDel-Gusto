@@ -75,7 +75,10 @@ public class SecurityConfig{
             "/signup",
             "/restaurants",
             "/friends/user/1",
-            "/users/me"
+            "/users/me",
+            "favoriteRestaurants/**",
+            "/restaurants/town/**"
+
     };
 
     @Bean
@@ -85,7 +88,8 @@ public class SecurityConfig{
         configuration.setAllowedMethods(Arrays.asList(
                 HttpMethod.GET.name(),
                 HttpMethod.POST.name(),
-                HttpMethod.OPTIONS.name()
+                HttpMethod.OPTIONS.name(),
+                HttpMethod.DELETE.name()
         ));
         configuration.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,

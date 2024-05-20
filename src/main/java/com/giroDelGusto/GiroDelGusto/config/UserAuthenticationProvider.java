@@ -37,9 +37,6 @@ public class UserAuthenticationProvider {
         Date validity = new Date(now.getTime() + 3600000); // 1 hour
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
-        System.out.println(user.getUsername());
-        System.out.println(user.getRole());
-
 
         return JWT.create()
                 .withSubject(user.getUsername())

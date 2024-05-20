@@ -5,7 +5,9 @@ import com.giroDelGusto.GiroDelGusto.repositories.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RestaurantService {
@@ -47,4 +49,14 @@ public class RestaurantService {
     public List<Restaurant> getRestaurantsByFavorite(Integer userId) {
         return restaurantRepository.findByFavoriteRestaurantsUserId(userId);
     }
+
+    public List<Restaurant> getRestaurantsByTown(String town) {
+        return restaurantRepository.findByLocationCityName(town);
+    }
+
+//    public List<Restaurant> getBestRestaurants() {
+//        return restaurantRepository.findAll().stream()
+//                .sorted(Comparator.comparing(Restaurant::getRating).reversed())
+//                .collect(Collectors.toList());
+//    }
 }

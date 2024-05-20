@@ -72,7 +72,6 @@ public class UserController {
         if (authentication.getPrincipal() instanceof UserDto) {
             UserDto userDto = (UserDto) authentication.getPrincipal();
             String currentUserName = userDto.getUsername();
-            System.out.println(userService.getUserByUsername(currentUserName));
 
             return userService.getUserByUsername(currentUserName);
         } else {

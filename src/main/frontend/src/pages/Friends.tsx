@@ -7,16 +7,18 @@ import Grid from "@mui/material/Grid";
 import { API_URL } from "../env";
 import { fetchUserDetails } from "../auth/GetUser";
 import { Friend } from "../models/friend.model";
+import { useDispatch } from "react-redux";
 
 const Friends: React.FC = () => {
   const [friends, setFriends] = useState<Friend[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getUser = async () => {
-      const userDetails = await fetchUserDetails();
+      const userDetails = await fetchUserDetails(dispatch);
       if (userDetails) {
         setUserId(userDetails.id);
       } else {
@@ -56,8 +58,7 @@ const Friends: React.FC = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <h1>Friends</h1>
-      <Grid container spacing={2} justifyContent="center" marginTop={"3rem"}>
+      <Grid container spacing={2} justifyContent="center" marginTop={"8rem"}>
         {friends.map((friend) => (
           <Grid item xs={12} sm={6} md={4} lg={2} key={friend.id}>
             <Card variant="outlined">

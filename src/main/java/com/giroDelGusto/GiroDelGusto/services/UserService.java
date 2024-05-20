@@ -50,10 +50,8 @@ public class UserService {
     }
 
     public UserDto login(Credentials credentialsDto) {
-        System.out.println("getLogin: "+credentialsDto.getUsername());
         User user = userRepository.findByUsername(credentialsDto.getUsername())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
-        System.out.println("getUser: "+user.getUsername());
 
         if (bCryptPasswordEncoder.matches(new String(credentialsDto.getPassword()), user.getPassword())) {
             return userMapper.toUserDto(user);

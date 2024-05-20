@@ -16,6 +16,7 @@ import { useAuth } from "../auth/AuthContext";
 import { LogoutButton } from "../auth/Logout";
 import { fetchUserDetails } from "../auth/GetUser";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 const logoStyle = {
   width: "60px",
@@ -32,10 +33,11 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
   const [open, setOpen] = useState(false);
   const { isAuthenticated } = useAuth();
   const [userInfo, setUserInfo] = useState<{ username: string } | null>(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getUser = async () => {
-      const userDetails = await fetchUserDetails();
+      const userDetails = await fetchUserDetails(dispatch);
       if (userDetails) {
         setUserInfo({ username: userDetails.username });
       }
