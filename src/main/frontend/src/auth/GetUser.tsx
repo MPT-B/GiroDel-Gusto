@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 type User = {
   id: number;
   username: string;
+  role: string;
 };
 
 async function fetchUserDetails(
@@ -19,7 +20,7 @@ async function fetchUserDetails(
       },
     });
 
-    dispatch(setUser(response.data.id.toString()));
+    dispatch(setUser(response.data));
 
     console.log(response.data);
     return response.data;

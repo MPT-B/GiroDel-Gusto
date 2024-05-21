@@ -4,6 +4,8 @@ export interface Restaurant {
   location: {
     address: string;
     city: { name: string };
+    latitude: number;
+    longitude: number;
   };
   imagePath: string;
   longitude?: number;

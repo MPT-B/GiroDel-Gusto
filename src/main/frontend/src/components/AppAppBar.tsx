@@ -32,14 +32,20 @@ interface AppAppBarProps {
 function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
   const [open, setOpen] = useState(false);
   const { isAuthenticated } = useAuth();
-  const [userInfo, setUserInfo] = useState<{ username: string } | null>(null);
+  const [userInfo, setUserInfo] = useState<{
+    username: string;
+    userRole?: string;
+  } | null>(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getUser = async () => {
       const userDetails = await fetchUserDetails(dispatch);
       if (userDetails) {
-        setUserInfo({ username: userDetails.username });
+        setUserInfo({
+          username: userDetails.username,
+          userRole: userDetails.role,
+        });
       }
     };
 
@@ -149,6 +155,17 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                     Friends
                   </Typography>
                 </MenuItem>
+                {userInfo && userInfo.userRole === "admin" && (
+                  <MenuItem
+                    component={Link}
+                    to="/restaurantManage"
+                    sx={{ py: "6px", px: "12px" }}
+                  >
+                    <Typography variant="body2" color="text.primary">
+                      Manage Restaurants
+                    </Typography>
+                  </MenuItem>
+                )}
               </Box>
             </Box>
             <Box

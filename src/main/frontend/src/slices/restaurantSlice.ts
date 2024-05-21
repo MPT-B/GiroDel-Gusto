@@ -7,14 +7,12 @@ interface RestaurantState {
   restaurants: Restaurant[];
   favoriteRestaurants: Restaurant[];
   bestInTownRestaurants: Restaurant[];
-  nearestRestaurants: Restaurant[];
 }
 
 const initialState: RestaurantState = {
   restaurants: [],
   favoriteRestaurants: [],
   bestInTownRestaurants: [],
-  nearestRestaurants: [],
 };
 
 export const fetchRestaurants = createAsyncThunk(
@@ -35,7 +33,7 @@ export const fetchBestInTownRestaurants = createAsyncThunk(
 
 export const fetchFavoriteRestaurants = createAsyncThunk(
   "restaurant/fetchFavoriteRestaurants",
-  async (userId: string) => {
+  async (userId: number) => {
     const response = await axios.get(
       `${API_URL}/favoriteRestaurants/user/${userId}`
     );

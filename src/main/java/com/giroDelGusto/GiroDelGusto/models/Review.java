@@ -13,11 +13,11 @@ public class Review {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id", insertable = false, updatable = false)
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
     @Column

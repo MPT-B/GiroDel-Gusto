@@ -1,24 +1,31 @@
-import React from "react";
-import { useFetchData } from "../hooks/fetchData";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchReviews } from "../slices/reviewSlice";
 import FeedList from "../components/FeedList";
-import { Review } from "../models/review.model";
-import { API_URL } from "../env";
+import AddReviewForm from "../components/ReviewForm";
+import { AppDispatch, RootState } from "../store/store";
 
 const Feed: React.FC = () => {
-  const {
-    data: reviews,
-    isLoading,
-    error,
-  } = useFetchData(`${API_URL}/reviews`);
+  const dispatch = useDispatch<AppDispatch>();
+  const { reviews, status, error } = useSelector(
+    (state: RootState) => state.reviews
+  );
+  const userRole = useSelector((state: RootState) => state.user.role);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) {
+  useEffect(() => {
+    dispatch(fetchReviews());
+  }, [dispatch]);
+
+  if (status === "loading") return <div>Loading...</div>;
+  if (status === "failed") {
     console.error("Error: ", error);
+    return <div>Error loading reviews</div>;
   }
 
   return (
     <div style={{ marginTop: "15vh", paddingInline: "3rem" }}>
-      {reviews && <FeedList reviews={reviews} />}
+      {reviews && <FeedList reviews={reviews} userRole={userRole} />}
+      <AddReviewForm />
     </div>
   );
 };

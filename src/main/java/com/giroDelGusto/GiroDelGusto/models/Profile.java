@@ -15,8 +15,8 @@ public class Profile {
     @Column
     private String bio;
 
-    @Column(name = "picture_path", nullable = false)
-    private String picturePath = "public\\data\\default_profile_photo.jpg";
+     @Column(name = "picture_path", nullable = false)
+     private String picturePath = "public\\data\\default_profile_photo.jpg";
 
     @Column(name = "visited_places", nullable = false)
     private Long visitedPlaces = 0L;

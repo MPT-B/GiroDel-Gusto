@@ -98,6 +98,7 @@ import {
 import { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { API_URL } from "../env";
+import { Restaurant } from "../models/restaurant.model";
 
 // Ikona dla pinezki
 // L.Icon.Default.mergeOptions({
@@ -115,24 +116,15 @@ const foodIcon = new Icon({
   anchorYUnits: "pixels",
 });
 
-// Typ dla lokalizacji restauracji
-interface RestaurantLocation {
-  id: number;
-  name: string;
-  latitude: number;
-  longitude: number;
-}
-
 const Map: React.FC = () => {
-  const [locations, setLocations] = useState<RestaurantLocation[]>([]);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
   // Przykład danych lokalizacji (możesz pobrać te dane z backendu)
   useEffect(() => {
-    //         const response = await axios.get(`${API_URL}/restaurants`);
     fetch(`${API_URL}/restaurants`)
       .then((response) => response.json())
       .then((data) => {
-        setLocations(data);
+        setRestaurants(data);
       });
   }, []);
 
@@ -148,9 +140,18 @@ const Map: React.FC = () => {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
 
-      <Marker key={12} position={[52.196217, 21.178225]} icon={foodIcon}>
-        <Popup>kasdzxc</Popup>
-      </Marker>
+      {restaurants.map((restaurant) => (
+        <Marker
+          key={restaurant.id}
+          position={[
+            restaurant.location.latitude,
+            restaurant.location.longitude,
+          ]}
+          icon={foodIcon}
+        >
+          <Popup>{restaurant.name}</Popup>
+        </Marker>
+      ))}
       <ZoomControl position="bottomright"></ZoomControl>
     </MapContainer>
   );

@@ -11,6 +11,7 @@ import UserProfile from "./pages/UserProfile";
 import LogIn from "./pages/Login";
 import { useAuth } from "./auth/AuthContext";
 import Signup from "./pages/Signup";
+import RestaurantManage from "./pages/RestaurantManage";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -40,6 +41,16 @@ function App() {
         <Route
           path="friends"
           element={isAuthenticated() ? <Friends /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="RestaurantManage"
+          element={
+            isAuthenticated() ? (
+              <RestaurantManage />
+            ) : (
+              <Navigate to="/restaurantManage" />
+            )
+          }
         />
         <Route
           path="userProfile"

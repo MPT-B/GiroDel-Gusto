@@ -73,12 +73,14 @@ public class SecurityConfig{
             "/main",
             "/login",
             "/signup",
-            "/restaurants",
-            "/friends/user/1",
-            "/users/me",
+            "/restaurants/**",
             "favoriteRestaurants/**",
-            "/restaurants/town/**"
-
+            "/reviews/**",
+            "public/data/**"
+//            "/users/me",
+//            "/friends/user/1",
+//            "favoriteRestaurants/**",
+//            "/restaurants/town/**"
     };
 
     @Bean

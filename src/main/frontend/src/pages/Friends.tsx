@@ -8,6 +8,7 @@ import { API_URL } from "../env";
 import { fetchUserDetails } from "../auth/GetUser";
 import { Friend } from "../models/friend.model";
 import { useDispatch } from "react-redux";
+import { getAuthToken } from "../auth/authToken";
 
 const Friends: React.FC = () => {
   const [friends, setFriends] = useState<Friend[]>([]);
@@ -34,6 +35,9 @@ const Friends: React.FC = () => {
       setIsLoading(true);
       fetch(`${API_URL}/friends/user/${userId}`, {
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`, // Call the function here
+        },
       })
         .then((response) => {
           if (!response.ok) {

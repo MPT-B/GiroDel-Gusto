@@ -6,9 +6,23 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import { Review, FeedItemsProps } from "../models/review.model";
-import { ListItemText, Rating } from "@mui/material";
+import { IconButton, ListItemText, Rating } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store/store";
+import { deleteReview } from "../slices/reviewSlice";
 
-const FeedItem: React.FC<FeedItemsProps> = ({ reviews }) => {
+interface FeedItemProps extends FeedItemsProps {
+  userRole: string;
+}
+
+const FeedItem: React.FC<FeedItemProps> = ({ reviews, userRole }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleDelete = (id: number) => {
+    dispatch(deleteReview(id));
+  };
+
   return (
     <List sx={{ width: "70vw", bgcolor: "background.paper", mx: "auto" }}>
       {reviews.map((review, index) => (
@@ -46,6 +60,15 @@ const FeedItem: React.FC<FeedItemsProps> = ({ reviews }) => {
                 </React.Fragment>
               }
             />
+            {userRole === "admin" && (
+              <IconButton
+                edge="end"
+                aria-label="delete"
+                onClick={() => handleDelete(review.id)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            )}
           </ListItem>
           {index < reviews.length - 1 && (
             <Divider variant="inset" component="li" />

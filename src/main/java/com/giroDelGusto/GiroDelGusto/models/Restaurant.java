@@ -16,7 +16,7 @@ public class Restaurant {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "location_id", insertable = false, updatable = false)
+    @JoinColumn(name = "location_id")
     private Location location;
 
     @Column(name = "image_path")

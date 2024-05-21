@@ -10,7 +10,6 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ShareIcon from "@mui/icons-material/Share";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { RootState } from "../store/store";
 import { toggleFavorite } from "../slices/restaurantSlice";
@@ -23,7 +22,7 @@ export default function RestaurantCard({
   restaurantId,
 }: RestaurantCardProps) {
   const dispatch = useDispatch();
-  const userId = useSelector((state: RootState) => state.user.userId);
+  const userId = useSelector((state: RootState) => state.user.id);
   const isFavorite = useSelector((state: RootState) =>
     state.restaurant.favoriteRestaurants.some(
       (restaurant) => restaurant.id === restaurantId
@@ -31,13 +30,20 @@ export default function RestaurantCard({
   );
 
   const handleFavoriteClick = () => {
-    dispatch(toggleFavorite(restaurantId));
-    axios
-      .post(
-        `http://localhost:8080/favoriteRestaurants/add?userId=${userId}&restaurantId=${restaurantId}`
-      )
+    if (!userId) {
+      alert("User is not logged in");
+      return;
+    }
+
+    const action = isFavorite ? "remove" : "add";
+    const url = `http://localhost:8080/favoriteRestaurants/${action}?userId=${userId}&restaurantId=${restaurantId}`;
+
+    const request = isFavorite ? axios.delete : axios.post;
+
+    request(url)
       .then((response) => {
-        console.log("Updated favorite status");
+        console.log(`Updated favorite status: ${action}`);
+        dispatch(toggleFavorite(restaurantId));
       })
       .catch((error) => console.error("error", error));
   };

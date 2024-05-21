@@ -56,4 +56,9 @@ public class RestaurantController {
     public List<Restaurant> getRestaurantsByTown(@PathVariable String town) {
         return restaurantService.getRestaurantsByTown(town);
     }
+
+    @PostMapping("/add")
+    public Restaurant addRestaurant(@RequestBody Restaurant restaurant) {
+        return restaurantService.createRestaurant(restaurant);
+    }
 }
