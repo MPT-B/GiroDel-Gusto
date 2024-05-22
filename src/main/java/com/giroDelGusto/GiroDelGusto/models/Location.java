@@ -17,9 +17,8 @@ public class Location {
     @Column
     private Double latitude;
 
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
+    @Column(nullable = false)
+    private String city;
 
     public Integer getId() {
         return id;
@@ -53,11 +52,11 @@ public class Location {
         this.latitude = latitude;
     }
 
-    public City getCity() {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(City city) {
+    public void setCity(String city) {
         this.city = city;
     }
 }

@@ -9,6 +9,7 @@ import { fetchUserDetails } from "../auth/GetUser";
 import { Friend } from "../models/friend.model";
 import { useDispatch } from "react-redux";
 import { getAuthToken } from "../auth/authToken";
+import { Avatar } from "@mui/material";
 
 const Friends: React.FC = () => {
   const [friends, setFriends] = useState<Friend[]>([]);
@@ -67,20 +68,21 @@ const Friends: React.FC = () => {
           <Grid item xs={12} sm={6} md={4} lg={2} key={friend.id}>
             <Card variant="outlined">
               <CardContent>
-                <Typography variant="h5" component="div">
+                <Typography
+                  variant="h5"
+                  component="div"
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
+                  <Avatar
+                    alt={friend.username}
+                    src={friend.profile.picturePath}
+                    sx={{ mr: 2 }}
+                  />
                   {friend.username}
                 </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                <Typography sx={{ my: 1.5 }} color="text.secondary">
                   {friend.profile.bio}
                 </Typography>
-                <img
-                  src={`http://localhost:8080/${friend.profile.picturePath.replace(
-                    "\\",
-                    "/"
-                  )}`}
-                  alt={friend.username}
-                  style={{ width: "100%", height: "auto" }}
-                />
               </CardContent>
             </Card>
           </Grid>

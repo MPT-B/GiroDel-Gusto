@@ -76,7 +76,9 @@ const RestaurantList: React.FC = () => {
             >
               <RestaurantCard
                 title={restaurant.name}
-                subheader={restaurant.location.address}
+                subheader={
+                  restaurant.location.address + ", " + restaurant.location.city
+                }
                 imagePath={restaurant.imagePath}
                 restaurantId={restaurant.id}
               />

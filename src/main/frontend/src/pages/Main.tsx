@@ -59,7 +59,7 @@ const Main: React.FC = () => {
             <Box key={index} sx={{ flex: "0 0 auto", marginRight: 2 }}>
               <RestaurantCard
                 title={restaurant.name}
-                subheader={`${restaurant.location.address}, ${restaurant.location.city.name}`}
+                subheader={`${restaurant.location.address}, ${restaurant.location.city}`}
                 imagePath={restaurant.imagePath}
                 restaurantId={restaurant.id}
               />
@@ -78,7 +78,7 @@ const Main: React.FC = () => {
             <Box key={index} sx={{ flex: "0 0 auto", marginRight: 2 }}>
               <RestaurantCard
                 title={restaurant.name}
-                subheader={`${restaurant.location.address}, ${restaurant.location.city.name}`}
+                subheader={`${restaurant.location.address}, ${restaurant.location.city}`}
                 imagePath={restaurant.imagePath}
                 restaurantId={restaurant.id}
               />
@@ -98,7 +98,7 @@ const Main: React.FC = () => {
             <Box key={index} sx={{ flex: "0 0 auto", marginRight: 2 }}>
               <RestaurantCard
                 title={restaurant.name}
-                subheader={`${restaurant.location.address}, ${restaurant.location.city.name}`}
+                subheader={`${restaurant.location.address}, ${restaurant.location.city}`}
                 imagePath={restaurant.imagePath}
                 restaurantId={restaurant.id}
               />

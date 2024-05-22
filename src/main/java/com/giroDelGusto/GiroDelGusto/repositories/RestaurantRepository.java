@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
     List<Restaurant> findByFavoriteRestaurantsUserId(Integer userId);
-    List<Restaurant> findByLocationCityName(String cityName);
+    List<Restaurant> findByLocationCity(String cityName);
     List<Restaurant> findByRestaurantCuisinesCuisineTypeId(Integer cuisineTypeId);
     Restaurant findByName(String name);
 }
