@@ -14,12 +14,14 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { RootState } from "../store/store";
 import { toggleFavorite } from "../slices/restaurantSlice";
 import { RestaurantCardProps } from "../models/restaurantCardProps.model";
+import { Rating } from "@mui/material";
 
 export default function RestaurantCard({
   title,
   subheader,
   imagePath,
   restaurantId,
+  averageRating,
 }: RestaurantCardProps) {
   const dispatch = useDispatch();
   const userId = useSelector((state: RootState) => state.user.id);
@@ -73,6 +75,8 @@ export default function RestaurantCard({
             <FavoriteBorderIcon />
           )}
         </IconButton>
+
+        <Rating name="read-only" value={averageRating} readOnly size="small" />
       </CardActions>
     </Card>
   );

@@ -53,7 +53,7 @@ function App() {
           }
         />
         <Route
-          path="userProfile"
+          path="userProfile/:userId"
           element={
             isAuthenticated() ? <UserProfile /> : <Navigate to="/login" />
           }

@@ -10,4 +10,5 @@ export interface Restaurant {
   imagePath: string;
   longitude?: number;
   latitude?: number;
+  averageRating:number;
 }

@@ -2,6 +2,7 @@ package com.giroDelGusto.GiroDelGusto.controllers;
 
 import com.giroDelGusto.GiroDelGusto.auth.SignupRequest;
 import com.giroDelGusto.GiroDelGusto.dtos.UserDto;
+import com.giroDelGusto.GiroDelGusto.models.Friendship;
 import com.giroDelGusto.GiroDelGusto.models.Restaurant;
 import com.giroDelGusto.GiroDelGusto.models.Review;
 import com.giroDelGusto.GiroDelGusto.models.User;
@@ -64,6 +65,21 @@ public class UserController {
     @GetMapping("/{userId}/favoriteRestaurants")
     public List<Restaurant> getUserFavoriteRestaurants(@PathVariable Integer userId) {
         return restaurantService.getRestaurantsByFavorite(userId);
+    }
+
+    @PutMapping("/{userId}/username-password")
+    public User updateUsernameAndPassword(@PathVariable Integer userId, @RequestBody User updatedUser) {
+        return userService.updateUsernameAndPassword(userId, updatedUser.getUsername(), updatedUser.getPassword());
+    }
+
+    @PutMapping("/{userId}/profile")
+    public User updateProfile(@PathVariable Integer userId, @RequestBody User updatedUser) {
+        return userService.updateProfile(userId, updatedUser);
+    }
+
+    @PostMapping("/{userId}/friends/{friendId}")
+    public Friendship addFriend(@PathVariable Integer userId, @PathVariable Integer friendId) {
+        return userService.addFriend(userId, friendId);
     }
 
     @GetMapping("/me")

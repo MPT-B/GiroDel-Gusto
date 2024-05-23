@@ -12,10 +12,12 @@ import java.util.List;
 public class RestaurantCuisineService {
 
     private final RestaurantCuisineRepository restaurantCuisineRepository;
+    private final RestaurantService restaurantService;
 
     @Autowired
-    public RestaurantCuisineService(RestaurantCuisineRepository restaurantCuisineRepository) {
+    public RestaurantCuisineService(RestaurantCuisineRepository restaurantCuisineRepository, RestaurantService restaurantService) {
         this.restaurantCuisineRepository = restaurantCuisineRepository;
+        this.restaurantService = restaurantService;
     }
 
     public List<RestaurantCuisine> getAllRestaurantCuisines() {
@@ -23,6 +25,8 @@ public class RestaurantCuisineService {
     }
 
     public List<Restaurant> getRestaurantByCuisine(Integer cuisineTypeId) {
-        return restaurantCuisineRepository.findRestaurantsByCuisineTypeId(cuisineTypeId);
+        List<Restaurant> restaurants = restaurantCuisineRepository.findRestaurantsByCuisineTypeId(cuisineTypeId);
+        restaurantService.calculateAverageRating(restaurants);
+        return restaurants;
     }
 }

@@ -27,5 +27,3 @@ public interface UserMapper {
     User signUpToUser(SignUp signUp);
 
 }
-
-

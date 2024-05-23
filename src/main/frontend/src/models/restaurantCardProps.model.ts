@@ -3,4 +3,5 @@ export interface RestaurantCardProps {
   subheader: string;
   imagePath: string;
   restaurantId: number;
+  averageRating: number;
 }

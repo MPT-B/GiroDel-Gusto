@@ -4,6 +4,7 @@ import com.giroDelGusto.GiroDelGusto.models.FavoriteRestaurant;
 import com.giroDelGusto.GiroDelGusto.models.Restaurant;
 import com.giroDelGusto.GiroDelGusto.models.User;
 import com.giroDelGusto.GiroDelGusto.repositories.FavoriteRestaurantRepository;
+import com.giroDelGusto.GiroDelGusto.repositories.RestaurantCuisineRepository;
 import com.giroDelGusto.GiroDelGusto.repositories.RestaurantRepository;
 import com.giroDelGusto.GiroDelGusto.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,14 @@ public class FavoriteRestaurantService {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
-    @Autowired
-    public FavoriteRestaurantService(FavoriteRestaurantRepository favoriteRestaurantRepository) {
-        this.favoriteRestaurantRepository = favoriteRestaurantRepository;
-    }
+    private final RestaurantService restaurantService;
 
-    public List<FavoriteRestaurant> getAllFavoriteRestaurants() {
-        return favoriteRestaurantRepository.findAll();
+
+    @Autowired
+    public FavoriteRestaurantService(FavoriteRestaurantRepository favoriteRestaurantRepository,RestaurantService restaurantService) {
+        this.favoriteRestaurantRepository = favoriteRestaurantRepository;
+        this.restaurantService = restaurantService;
+
     }
 
     public FavoriteRestaurant addFavoriteRestaurant(Integer userId, Integer restaurantId) {
@@ -42,10 +44,12 @@ public class FavoriteRestaurantService {
     }
 
     public List<Restaurant> getFavoriteRestaurantsByUserId(Integer userId) {
-        return favoriteRestaurantRepository.findAll().stream()
+        List<Restaurant> restaurants =  favoriteRestaurantRepository.findAll().stream()
                 .filter(favoriteRestaurant -> favoriteRestaurant.getUser().getId().equals(userId))
                 .map(FavoriteRestaurant::getRestaurant)
                 .collect(Collectors.toList());
+        restaurantService.calculateAverageRating(restaurants);
+        return restaurants;
     }
 
     public void removeFavoriteRestaurant(Integer userId, Integer restaurantId) {

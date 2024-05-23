@@ -5,6 +5,7 @@ import com.giroDelGusto.GiroDelGusto.dtos.UserDto;
 import com.giroDelGusto.GiroDelGusto.exceptions.AppException;
 import com.giroDelGusto.GiroDelGusto.mappers.UserMapper;
 import com.giroDelGusto.GiroDelGusto.models.*;
+import com.giroDelGusto.GiroDelGusto.repositories.FriendshipRepository;
 import com.giroDelGusto.GiroDelGusto.repositories.ProfileRepository;
 import com.giroDelGusto.GiroDelGusto.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,16 +23,11 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
+    private final FriendshipRepository friendshipRepository;
+
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     private final UserMapper userMapper;
 
-
-//    @Autowired
-//    public UserService(UserRepository userRepository, ProfileRepository profileRepository, UserMapper userMapper) {
-//        this.userRepository = userRepository;
-//        this.profileRepository = profileRepository;
-//        this.userMapper = userMapper;
-//    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -125,8 +121,51 @@ public class UserService {
         }
     }
 
+
     public UserDto getUserByUsername(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new Error("User not found"));
         return userMapper.toUserDto(user);
+    }
+
+    public User updateProfile(Integer userId, User updatedUser) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            user.setUsername(updatedUser.getUsername());
+            user.getProfile().setBio(updatedUser.getProfile().getBio());
+            userRepository.save(user);
+        }
+        return user;
+    }
+
+    public User updatePassword(Integer userId, String newPassword) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+            userRepository.save(user);
+        }
+        return user;
+    }
+
+    public User updateUsernameAndPassword(Integer userId, String newUsername, String newPassword) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            user.setUsername(newUsername);
+            user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+            userRepository.save(user);
+        }
+        return user;
+    }
+
+    public Friendship addFriend(Integer userId, Integer friendId) {
+        User user = userRepository.findById(userId).orElse(null);
+        User friend = userRepository.findById(friendId).orElse(null);
+        if (user != null && friend != null) {
+            Friendship friendship = new Friendship();
+            friendship.setMember1(user);
+            friendship.setMember2(friend);
+            friendshipRepository.save(friendship);
+            return friendship;
+        }
+        return null;
     }
 }

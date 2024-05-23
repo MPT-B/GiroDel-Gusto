@@ -62,6 +62,7 @@ const Main: React.FC = () => {
                 subheader={`${restaurant.location.address}, ${restaurant.location.city}`}
                 imagePath={restaurant.imagePath}
                 restaurantId={restaurant.id}
+                averageRating={restaurant.averageRating}
               />
             </Box>
           ))
@@ -81,6 +82,7 @@ const Main: React.FC = () => {
                 subheader={`${restaurant.location.address}, ${restaurant.location.city}`}
                 imagePath={restaurant.imagePath}
                 restaurantId={restaurant.id}
+                averageRating={restaurant.averageRating}
               />
             </Box>
           ))
@@ -101,6 +103,7 @@ const Main: React.FC = () => {
                 subheader={`${restaurant.location.address}, ${restaurant.location.city}`}
                 imagePath={restaurant.imagePath}
                 restaurantId={restaurant.id}
+                averageRating={restaurant.averageRating}
               />
             </Box>
           ))

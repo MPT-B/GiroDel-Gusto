@@ -2,6 +2,7 @@ package com.giroDelGusto.GiroDelGusto.services;
 
 import com.giroDelGusto.GiroDelGusto.models.Location;
 import com.giroDelGusto.GiroDelGusto.models.Restaurant;
+import com.giroDelGusto.GiroDelGusto.models.Review;
 import com.giroDelGusto.GiroDelGusto.repositories.LocationRepository;
 import com.giroDelGusto.GiroDelGusto.repositories.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,16 @@ public class RestaurantService {
     @Autowired
     private LocationRepository locationRepository;
 
-    @Autowired
+  @Autowired
     public RestaurantService(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
+
     }
 
     public List<Restaurant> getAllRestaurants() {
-        return restaurantRepository.findAll();
+        List<Restaurant> restaurants = restaurantRepository.findAll();
+        calculateAverageRating(restaurants);
+        return restaurants;
     }
 
     public Restaurant getRestaurantById(Integer id) {
@@ -33,6 +37,7 @@ public class RestaurantService {
         Location location = restaurant.getLocation();
         location = locationRepository.save(location);
         restaurant.setLocation(location);
+        System.out.println(location);
         return restaurantRepository.save(restaurant);
     }
 
@@ -52,10 +57,27 @@ public class RestaurantService {
     }
 
     public List<Restaurant> getRestaurantsByFavorite(Integer userId) {
-        return restaurantRepository.findByFavoriteRestaurantsUserId(userId);
+        List<Restaurant> restaurants = restaurantRepository.findByFavoriteRestaurantsUserId(userId);
+        calculateAverageRating(restaurants);
+        return restaurants;
     }
 
     public List<Restaurant> getRestaurantsByTown(String town) {
-        return restaurantRepository.findByLocationCity(town);
+        List<Restaurant> restaurants = restaurantRepository.findByLocationCity(town);
+        calculateAverageRating(restaurants);
+        return restaurants;
+    }
+    public void calculateAverageRating(List<Restaurant> restaurants) {
+        for (Restaurant restaurant : restaurants) {
+            List<Review> reviews = restaurant.getReviews();
+            if (!reviews.isEmpty()) {
+                double sum = 0;
+                for (Review review : reviews) {
+                    sum += review.getRating();
+                }
+                double average = sum / reviews.size();
+                restaurant.setAverageRating(average);
+            }
+        }
     }
 }

@@ -19,6 +19,6 @@ public class SignUp {
     private String username;
 
     @NotEmpty
-    private char[] password;
+    private String password;
 
 }

@@ -12,7 +12,7 @@ import { getAuthToken } from "../auth/authToken";
 const AddRestaurantForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
-  const [cityName, setCityName] = useState("");
+  const [city, setCityName] = useState("");
   const [address, setAddress] = useState("");
   const [longitude, setLongitude] = useState("");
   const [latitude, setLatitude] = useState("");
@@ -38,7 +38,7 @@ const AddRestaurantForm: React.FC = () => {
   };
 
   const handleGeocode = async () => {
-    const geoData = await geocodeAddress(cityName + ", " + address);
+    const geoData = await geocodeAddress(city + ", " + address);
     if (geoData) {
       setLatitude(geoData.latitude.toString());
       setLongitude(geoData.longitude.toString());
@@ -51,14 +51,14 @@ const AddRestaurantForm: React.FC = () => {
     const restaurantData = {
       name,
       location: {
-        cityName,
+        city,
         address,
         longitude,
         latitude,
       },
       imagePath,
     };
-
+    console.log(restaurantData);
     try {
       const response = await axios({
         method: "post",
@@ -98,7 +98,7 @@ const AddRestaurantForm: React.FC = () => {
             <FormControl fullWidth>
               <TextField
                 label="City Name"
-                value={cityName}
+                value={city}
                 onChange={(e) => setCityName(e.target.value)}
                 required
               />

@@ -1,6 +1,7 @@
 package com.giroDelGusto.GiroDelGusto.controllers;
 
 import com.giroDelGusto.GiroDelGusto.dtos.ReviewRequest;
+import com.giroDelGusto.GiroDelGusto.kafka.KafkaProducer;
 import com.giroDelGusto.GiroDelGusto.models.Review;
 import com.giroDelGusto.GiroDelGusto.services.RestaurantService;
 import com.giroDelGusto.GiroDelGusto.services.ReviewService;
@@ -24,8 +25,12 @@ public class ReviewController {
     private RestaurantService restaurantService;
 
     @Autowired
-    public ReviewController(ReviewService reviewService) {
+    private KafkaProducer kafkaProducer;
+
+    @Autowired
+    public ReviewController(ReviewService reviewService, KafkaProducer kafkaProducer) {
         this.reviewService = reviewService;
+        this.kafkaProducer = kafkaProducer;
     }
 
     @GetMapping
@@ -52,15 +57,36 @@ public class ReviewController {
         review.setComment(reviewRequest.getComment());
         review.setDateAdded(new Timestamp(System.currentTimeMillis()));
         review.setFoodOrdered(reviewRequest.getFoodOrdered());
-        return reviewService.addReview(review);
+
+        Review savedReview = reviewService.addReview(review);
+
+        kafkaProducer.sendMessage("reviews",  savedReview.getId() +":new review added");
+
+        return savedReview;
     }
+
     @PutMapping
     public Review editReview(@RequestBody Review review) {
-        return reviewService.updateReview(review);
+        Review savedReview = reviewService.updateReview(review);
+        kafkaProducer.sendMessage("reviews", "Edited Review ID: " + savedReview.getId());
+
+        return savedReview;
     }
 
     @DeleteMapping("/remove/{id}")
     public void deleteReview(@PathVariable Integer id) {
         reviewService.deleteReview(id);
+        kafkaProducer.sendMessage("reviews", "Deleted Review:deleted ");
+    }
+
+    @GetMapping("/friends/{userId}")
+    public List<Review> getReviewsByFriends(@PathVariable Integer userId) {
+        return reviewService.getReviewsByFriends(userId);
+    }
+
+    @GetMapping("/test")
+    public void getTest() {
+        this.kafkaProducer = kafkaProducer;
+        kafkaProducer.sendMessage("reviews", "succes:succes");
     }
 }

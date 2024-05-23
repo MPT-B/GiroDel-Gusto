@@ -37,7 +37,7 @@ const Friends: React.FC = () => {
       fetch(`${API_URL}/friends/user/${userId}`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${getAuthToken()}`, // Call the function here
+          Authorization: `Bearer ${getAuthToken()}`,
         },
       })
         .then((response) => {
@@ -68,16 +68,21 @@ const Friends: React.FC = () => {
           <Grid item xs={12} sm={6} md={4} lg={2} key={friend.id}>
             <Card variant="outlined">
               <CardContent>
+                <Avatar
+                  alt={friend.username}
+                  src={friend.profile.picturePath}
+                  sx={{ mr: 2 }}
+                />
                 <Typography
                   variant="h5"
                   component="div"
-                  sx={{ display: "flex", alignItems: "center" }}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
                 >
-                  <Avatar
-                    alt={friend.username}
-                    src={friend.profile.picturePath}
-                    sx={{ mr: 2 }}
-                  />
                   {friend.username}
                 </Typography>
                 <Typography sx={{ my: 1.5 }} color="text.secondary">

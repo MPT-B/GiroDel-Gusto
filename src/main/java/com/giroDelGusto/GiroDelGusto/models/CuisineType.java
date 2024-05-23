@@ -2,9 +2,11 @@ package com.giroDelGusto.GiroDelGusto.models;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "cuisine_types")
-public class CuisineType {
+public class CuisineType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

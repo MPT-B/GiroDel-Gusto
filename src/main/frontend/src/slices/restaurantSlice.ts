@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_URL } from "../env";
 import { Restaurant } from "../models/restaurant.model";
+import { getAuthToken } from "../auth/authToken";
 
 interface RestaurantState {
   restaurants: Restaurant[];
@@ -18,7 +19,11 @@ const initialState: RestaurantState = {
 export const fetchRestaurants = createAsyncThunk(
   "restaurant/fetchRestaurants",
   async () => {
-    const response = await axios.get(`${API_URL}/restaurants`);
+    const response = await axios.get(`${API_URL}/restaurants`, {
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+      },
+    });
     return response.data;
   }
 );
@@ -26,7 +31,11 @@ export const fetchRestaurants = createAsyncThunk(
 export const fetchBestInTownRestaurants = createAsyncThunk(
   "restaurant/fetchBestInTownRestaurants",
   async (city: string) => {
-    const response = await axios.get(`${API_URL}/restaurants/town/${city}`);
+    const response = await axios.get(`${API_URL}/restaurants/town/${city}`, {
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+      },
+    });
     return response.data;
   }
 );
@@ -35,7 +44,12 @@ export const fetchFavoriteRestaurants = createAsyncThunk(
   "restaurant/fetchFavoriteRestaurants",
   async (userId: number) => {
     const response = await axios.get(
-      `${API_URL}/favoriteRestaurants/user/${userId}`
+      `${API_URL}/favoriteRestaurants/user/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }
     );
     return response.data;
   }

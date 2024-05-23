@@ -1,8 +1,11 @@
 package com.giroDelGusto.GiroDelGusto.models;
 import jakarta.persistence.*;
+
+import java.io.Serializable;
+
 @Entity
 @Table(name = "favorite_restaurants")
-public class FavoriteRestaurant {
+public class FavoriteRestaurant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

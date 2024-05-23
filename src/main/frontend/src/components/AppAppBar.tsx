@@ -1,13 +1,11 @@
 import * as React from "react";
-import { PaletteMode } from "@mui/material";
+import { Button, Menu, MenuItem, PaletteMode } from "@mui/material";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import ToggleColorMode from "./ToggleColorMode";
@@ -31,12 +29,22 @@ interface AppAppBarProps {
 
 function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
   const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { isAuthenticated } = useAuth();
   const [userInfo, setUserInfo] = useState<{
     username: string;
     userRole?: string;
+    id: number;
   } | null>(null);
   const dispatch = useDispatch();
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
     const getUser = async () => {
@@ -45,6 +53,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
         setUserInfo({
           username: userDetails.username,
           userRole: userDetails.role,
+          id: userDetails.id,
         });
       }
     };
@@ -178,7 +187,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
               {userLoggedIn && userInfo ? (
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <Button
+                  {/* <Button
                     color="primary"
                     variant="text"
                     size="small"
@@ -186,14 +195,36 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                     href="/userProfile"
                   >
                     {userInfo.username}
+                  </Button> */}
+                  <Button
+                    variant="contained"
+                    onClick={handleClick}
+                    size="small"
+                  >
+                    {userInfo.username}
                   </Button>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <Button
+                      href={`/userProfile/${userInfo.id}`}
+                      onClick={handleClose}
+                    >
+                      Settings
+                    </Button>
+                    <MenuItem onClick={handleClose}>FAQ</MenuItem>
+                    <MenuItem onClick={handleClose}>Test1</MenuItem>
+                    <MenuItem onClick={handleClose}>Test2</MenuItem>
+                  </Menu>
                   <LogoutButton />
                 </Box>
               ) : (
                 <div>
                   <Button
                     color="primary"
-                    variant="text"
+                    variant="contained"
                     size="small"
                     component="a"
                     href="/login"

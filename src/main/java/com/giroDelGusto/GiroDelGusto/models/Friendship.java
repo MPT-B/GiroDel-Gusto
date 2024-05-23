@@ -2,9 +2,11 @@ package com.giroDelGusto.GiroDelGusto.models;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "friendships")
-public class Friendship {
+public class Friendship implements Serializable {
     @Id
     @Column(name = "friendship_id")
     private Integer friendshipId;

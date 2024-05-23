@@ -81,6 +81,7 @@ const RestaurantList: React.FC = () => {
                 }
                 imagePath={restaurant.imagePath}
                 restaurantId={restaurant.id}
+                averageRating={restaurant.averageRating}
               />
             </Grid>
           ))

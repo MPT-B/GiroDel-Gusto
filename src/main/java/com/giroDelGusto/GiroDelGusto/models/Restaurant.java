@@ -3,11 +3,12 @@ package com.giroDelGusto.GiroDelGusto.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "restaurants")
-public class Restaurant {
+public class Restaurant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -37,6 +38,9 @@ public class Restaurant {
     @JsonIgnore
     @OneToMany(mappedBy = "restaurant")
     private List<RestaurantCuisine> restaurantCuisines;
+    @Transient
+    private Double averageRating;
+
     public Integer getId() {
         return id;
     }
@@ -99,5 +103,13 @@ public class Restaurant {
 
     public void setRestaurantCuisines(List<RestaurantCuisine> restaurantCuisines) {
         this.restaurantCuisines = restaurantCuisines;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
     }
 }

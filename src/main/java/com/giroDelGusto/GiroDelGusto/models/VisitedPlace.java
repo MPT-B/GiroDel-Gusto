@@ -2,11 +2,12 @@ package com.giroDelGusto.GiroDelGusto.models;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
 @Table(name = "visited_places")
-public class VisitedPlace {
+public class VisitedPlace implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
