@@ -5,6 +5,7 @@ import com.giroDelGusto.GiroDelGusto.models.User;
 import com.giroDelGusto.GiroDelGusto.services.FriendshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,5 +31,9 @@ public class FriendshipController {
     public Set<User> getFriendsByUserId(@PathVariable Integer userId) {
         return friendshipService.getFriendsByUserId(userId);
     }
-    // Add other methods as needed
+
+    @PostMapping("/friends/{userId}/{friendId}")
+    public Friendship addFriend(@PathVariable Integer userId, @PathVariable Integer friendId) {
+        return friendshipService.addFriend(userId, friendId);
+    }
 }

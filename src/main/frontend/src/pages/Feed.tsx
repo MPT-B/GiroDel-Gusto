@@ -17,14 +17,6 @@ const Feed: React.FC = () => {
 
   const [showFriendReviews, setShowFriendReviews] = useState(false);
 
-  // useEffect(() => {
-  //   if (showFriendReviews) {
-  //     dispatch(fetchFriendReviews(userId));
-  //   } else {
-  //     dispatch(fetchReviews());
-  //   }
-  // }, [dispatch, showFriendReviews, userId]);
-
   useEffect(() => {
     if (showFriendReviews) {
       dispatch(fetchFriendReviews(userId));
@@ -32,7 +24,7 @@ const Feed: React.FC = () => {
       dispatch(fetchReviews());
     }
 
-    const stompClient = connectWebSocket(8, (message: string) => {
+    const stompClient = connectWebSocket((message: string) => {
       console.log("Received message: ", message);
       if (showFriendReviews) {
         dispatch(fetchFriendReviews(userId));
@@ -44,7 +36,7 @@ const Feed: React.FC = () => {
     return () => {
       stompClient.deactivate();
     };
-  }, [dispatch, showFriendReviews, userId, dispatch]);
+  }, [dispatch, showFriendReviews, userId]);
 
   const toggleShowFriendReviews = () => {
     setShowFriendReviews(!showFriendReviews);

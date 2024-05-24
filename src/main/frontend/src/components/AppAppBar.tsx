@@ -187,15 +187,6 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
               {userLoggedIn && userInfo ? (
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  {/* <Button
-                    color="primary"
-                    variant="text"
-                    size="small"
-                    component="a"
-                    href="/userProfile"
-                  >
-                    {userInfo.username}
-                  </Button> */}
                   <Button
                     variant="contained"
                     onClick={handleClick}
@@ -214,9 +205,9 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                     >
                       Settings
                     </Button>
-                    <MenuItem onClick={handleClose}>FAQ</MenuItem>
-                    <MenuItem onClick={handleClose}>Test1</MenuItem>
-                    <MenuItem onClick={handleClose}>Test2</MenuItem>
+                    <MenuItem href={"/FAQ"} onClick={handleClose}>
+                      FAQ
+                    </MenuItem>
                   </Menu>
                   <LogoutButton />
                 </Box>
@@ -256,7 +247,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
                 <Box
                   sx={{
-                    minWidth: "60dvw",
+                    minWidth: "60vw",
                     p: 2,
                     backgroundColor: "background.paper",
                     flexGrow: 1,
@@ -290,13 +281,34 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                   <MenuItem component={Link} to="/friends">
                     Friends
                   </MenuItem>
+                  {userInfo && userInfo.userRole === "admin" && (
+                    <MenuItem component={Link} to="/restaurantManage">
+                      Manage Restaurants
+                    </MenuItem>
+                  )}
                   <Divider />
                   {userLoggedIn && userInfo ? (
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "start",
+                        gap: 1,
+                      }}
+                    >
                       <MenuItem>
                         <Typography color="text.primary">
                           {userInfo.username}
                         </Typography>
+                      </MenuItem>
+                      <MenuItem
+                        component={Link}
+                        to={`/userProfile/${userInfo.id}`}
+                      >
+                        Settings
+                      </MenuItem>
+                      <MenuItem component={Link} to={"/FAQ"}>
+                        FAQ
                       </MenuItem>
 
                       <MenuItem>
@@ -304,7 +316,11 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                       </MenuItem>
                     </Box>
                   ) : (
-                    <div>
+                    <Box
+                      sx={{
+                        display: "flex",
+                      }}
+                    >
                       <MenuItem>
                         <Button
                           color="primary"
@@ -327,7 +343,7 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                           Sign up
                         </Button>
                       </MenuItem>
-                    </div>
+                    </Box>
                   )}
                 </Box>
               </Drawer>

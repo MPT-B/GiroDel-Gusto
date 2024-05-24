@@ -3,6 +3,7 @@ package com.giroDelGusto.GiroDelGusto.services;
 import com.giroDelGusto.GiroDelGusto.models.Friendship;
 import com.giroDelGusto.GiroDelGusto.models.User;
 import com.giroDelGusto.GiroDelGusto.repositories.FriendshipRepository;
+import com.giroDelGusto.GiroDelGusto.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,12 @@ import java.util.Set;
 public class FriendshipService {
 
     private final FriendshipRepository friendshipRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public FriendshipService(FriendshipRepository friendshipRepository) {
+    public FriendshipService(FriendshipRepository friendshipRepository, UserRepository userRepository) {
         this.friendshipRepository = friendshipRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Friendship> getAllFriendships() {
@@ -37,5 +40,12 @@ public class FriendshipService {
         return friends;
     }
 
-    // Add other methods as needed
+    public Friendship addFriend(Integer userId, Integer friendId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User friend = userRepository.findById(friendId).orElseThrow(() -> new RuntimeException("User not found"));
+        Friendship friendship = new Friendship();
+        friendship.setMember1(user);
+        friendship.setMember2(friend);
+        return friendshipRepository.save(friendship);
+    }
 }

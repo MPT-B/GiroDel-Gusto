@@ -20,6 +20,6 @@ public class KafkaConsumer {
         System.out.println("User ID: " + userId);
         System.out.println("Message: " + reviewMessage);
 
-        messagingTemplate.convertAndSend("/topic/review/" + userId, reviewMessage);
+        messagingTemplate.convertAndSend("/topic/review", reviewMessage);
     }
 }

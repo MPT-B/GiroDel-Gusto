@@ -14,8 +14,24 @@ import {
   DialogContent,
   Grid,
   TextField,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { RootState, AppDispatch } from "../store/store";
+import { styled } from "@mui/material/styles";
+
+const ResponsiveDialog = styled(Dialog)(({ theme }) => ({
+  [theme.breakpoints.down("sm")]: {
+    "& .MuiDialog-paper": {
+      margin: 0,
+      width: "100%",
+      maxWidth: "none",
+      height: "100%",
+      maxHeight: "none",
+      borderRadius: 0,
+    },
+  },
+}));
 
 const AddReviewForm: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -26,6 +42,8 @@ const AddReviewForm: React.FC = () => {
   const userId = useSelector((state: RootState) => state.user.id);
   const dispatch = useDispatch<AppDispatch>();
   const { restaurants } = useSelector((state: RootState) => state.restaurant);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     dispatch(fetchRestaurants());
@@ -73,9 +91,13 @@ const AddReviewForm: React.FC = () => {
       >
         Add Review
       </Button>
-      <Dialog open={open} onClose={() => setOpen(false)}>
+      <ResponsiveDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        fullScreen={fullScreen}
+      >
         <DialogTitle>Add Review</DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ pt: `${theme.spacing(2)} !important` }}>
           <form onSubmit={handleSubmit}>
             <Grid container direction="column" spacing={2}>
               <Grid item>
@@ -99,6 +121,7 @@ const AddReviewForm: React.FC = () => {
                     required
                     multiline
                     rows={4}
+                    variant="outlined"
                   />
                 </FormControl>
               </Grid>
@@ -136,7 +159,7 @@ const AddReviewForm: React.FC = () => {
             </Grid>
           </form>
         </DialogContent>
-      </Dialog>
+      </ResponsiveDialog>
     </div>
   );
 };

@@ -52,10 +52,13 @@ const CuisineFilter: React.FC<CuisineFilterProps> = ({
       container
       wrap="nowrap"
       sx={{
-        overflowX: "auto",
-        margin: 2,
-        scrollSnapType: "x mandatory",
-        justifyContent: "center",
+        overflowX: "scroll",
+        scrollSnapType: "x proximity",
+        padding: 2,
+        justifyContent: {
+          xs: "flex-start",
+          sm: "center",
+        },
       }}
     >
       {cuisineTypes.map((cuisineType) => (

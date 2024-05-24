@@ -49,7 +49,7 @@ import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { getAuthToken } from "../auth/authToken";
 
-const connectWebSocket = (reviewId: any, onMessageReceived: any) => {
+const connectWebSocket = (onMessageReceived: any) => {
   const socket = new SockJS("http://localhost:8080/ws");
   const stompClient = new Client({
     webSocketFactory: () => socket,
@@ -62,7 +62,8 @@ const connectWebSocket = (reviewId: any, onMessageReceived: any) => {
     },
     onConnect: () => {
       console.log("Connected");
-      stompClient.subscribe(`/topic/review/${reviewId}`, (message) => {
+      stompClient.subscribe(`/topic/review`, (message) => {
+        console.log("Received WebSocket message: ", message);
         onMessageReceived(message.body);
       });
     },

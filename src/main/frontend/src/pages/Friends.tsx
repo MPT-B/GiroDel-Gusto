@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -10,6 +11,7 @@ import { Friend } from "../models/friend.model";
 import { useDispatch } from "react-redux";
 import { getAuthToken } from "../auth/authToken";
 import { Avatar } from "@mui/material";
+import AddFriend from "../components/FriendshipForm";
 
 const Friends: React.FC = () => {
   const [friends, setFriends] = useState<Friend[]>([]);
@@ -29,34 +31,36 @@ const Friends: React.FC = () => {
     };
 
     getUser();
-  }, []);
+  }, [dispatch]);
 
-  useEffect(() => {
-    if (userId) {
+  const fetchFriends = async (userId: number) => {
+    try {
       setIsLoading(true);
-      fetch(`${API_URL}/friends/user/${userId}`, {
-        method: "GET",
+      const response = await axios.get(`${API_URL}/friends/user/${userId}`, {
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
         },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to fetch friends");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setFriends(data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching friends:", error);
-          setError(error.message);
-          setIsLoading(false);
-        });
+      });
+      setFriends(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching friends:", error);
+      setError("Failed to fetch friends");
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (userId) {
+      fetchFriends(userId);
     }
   }, [userId]);
+
+  const handleAddFriend = async () => {
+    if (userId) {
+      await fetchFriends(userId);
+    }
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -70,7 +74,7 @@ const Friends: React.FC = () => {
               <CardContent>
                 <Avatar
                   alt={friend.username}
-                  src={friend.profile.picturePath}
+                  src={friend.profile?.picturePath || ""}
                   sx={{ mr: 2 }}
                 />
                 <Typography
@@ -86,13 +90,17 @@ const Friends: React.FC = () => {
                   {friend.username}
                 </Typography>
                 <Typography sx={{ my: 1.5 }} color="text.secondary">
-                  {friend.profile.bio}
+                  {friend.profile?.bio || ""}
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
         ))}
       </Grid>
+      <AddFriend
+        currentFriends={friends.map((friend) => friend.username)}
+        onFriendAdded={handleAddFriend}
+      />
     </Box>
   );
 };

@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -62,22 +63,20 @@ public class UserService {
             throw new AppException("Login already exists", HttpStatus.BAD_REQUEST);
         }
 
-        // Create a new profile with default values
         Profile profile = new Profile();
         profile.setBio("New to Grio");
         profile.setPicturePath("public\\data\\default_profile_photo.jpg");
         profile.setVisitedPlaces(0L);
 
-        // Save the profile
         Profile savedProfile = profileRepository.save(profile);
 
         User user = userMapper.signUpToUser(userDto);
         user.setRole(UserRole.normal);
-        user.setProfileId(savedProfile.getId()); // Set the user's profile ID to be the same as the profile ID
+        user.setProfile(savedProfile);
+        user.setProfileId(savedProfile.getId());
 
         user.setPassword(bCryptPasswordEncoder.encode(new String(userDto.getPassword())));
 
-        // Save the user
         User savedUser = userRepository.save(user);
 
         return userMapper.toUserDto(savedUser);
@@ -126,6 +125,11 @@ public class UserService {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new Error("User not found"));
         return userMapper.toUserDto(user);
     }
+    public List<UserDto> getUsersByUsername(String username) {
+        List<User> users = userRepository.findByUsernameContainingIgnoreCase(username);
+        return users.stream().map(userMapper::toUserDto).collect(Collectors.toList());
+    }
+
 
     public User updateProfile(Integer userId, User updatedUser) {
         User user = userRepository.findById(userId).orElse(null);

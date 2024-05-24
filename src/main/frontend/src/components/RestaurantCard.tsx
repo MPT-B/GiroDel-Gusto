@@ -15,6 +15,7 @@ import { RootState } from "../store/store";
 import { toggleFavorite } from "../slices/restaurantSlice";
 import { RestaurantCardProps } from "../models/restaurantCardProps.model";
 import { Rating } from "@mui/material";
+import { getAuthToken } from "../auth/authToken";
 
 export default function RestaurantCard({
   title,
@@ -39,10 +40,11 @@ export default function RestaurantCard({
 
     const action = isFavorite ? "remove" : "add";
     const url = `http://localhost:8080/favoriteRestaurants/${action}?userId=${userId}&restaurantId=${restaurantId}`;
+    const headers = { Authorization: `Bearer ${getAuthToken()}` };
 
     const request = isFavorite ? axios.delete : axios.post;
 
-    request(url)
+    request(url, {}, { headers })
       .then((response) => {
         console.log(`Updated favorite status: ${action}`);
         dispatch(toggleFavorite(restaurantId));
@@ -51,7 +53,14 @@ export default function RestaurantCard({
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card
+      sx={{
+        maxWidth: 345,
+        ":hover": {
+          boxShadow: 20,
+        },
+      }}
+    >
       <CardHeader
         action={
           <IconButton aria-label="settings">

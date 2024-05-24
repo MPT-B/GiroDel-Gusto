@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { useDispatch } from "react-redux";
 import { setUser } from "../slices/userSlice";
@@ -30,6 +30,10 @@ const Login = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
+  if (isAuthenticated()) {
+    return <Navigate to="/main" />;
+  }
+
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -43,7 +47,7 @@ const Login = () => {
         setAuthHeader(result.data.token);
         const userId = result.data.id;
         dispatch(setUser(userId));
-        navigate("/main");
+        window.location.href = "/main";
       } else {
         throw Error(result.error);
       }

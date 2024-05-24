@@ -29,7 +29,11 @@ const UserProfile: React.FC = () => {
         console.log(response);
         setUsername(response.data.username);
         setEmail(response.data.email);
-        setBio(response.data.profile.bio);
+        if (response.data.profile) {
+          setBio(response.data.profile.bio);
+        } else {
+          setBio("");
+        }
       });
   }, [userId]);
 
@@ -103,13 +107,14 @@ const UserProfile: React.FC = () => {
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
+        padding="10vw"
       >
         <Grid
           container
           direction="column"
           spacing={2}
           marginTop={"150px"}
-          width={"60vh"}
+          maxWidth={"800px"}
         >
           <Grid item>
             <FormControl fullWidth>

@@ -6,6 +6,7 @@ import {
   Grid,
   TextField,
   CircularProgress,
+  Box,
 } from "@mui/material";
 import { getAuthToken } from "../auth/authToken";
 
@@ -81,8 +82,16 @@ const AddRestaurantForm: React.FC = () => {
   };
 
   return (
-    <div style={{ width: "50%", margin: "200px auto 0" }}>
-      <form onSubmit={handleSubmit}>
+    <Box
+      sx={{
+        marginTop: "200px",
+        paddingInline: { xs: "10px", sm: "10vw" },
+      }}
+    >
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", alignItems: "center" }}
+      >
         <Grid container direction="column" spacing={2}>
           <Grid item>
             <FormControl fullWidth>
@@ -156,7 +165,7 @@ const AddRestaurantForm: React.FC = () => {
           </Grid>
         </Grid>
       </form>
-    </div>
+    </Box>
   );
 };
 

@@ -11,11 +11,12 @@ import UserProfile from "./pages/UserProfile";
 import LogIn from "./pages/Login";
 import { useAuth } from "./auth/AuthContext";
 import Signup from "./pages/Signup";
+import Faq from "./pages/Faq";
 import RestaurantManage from "./pages/RestaurantManage";
 
 function App() {
   const { isAuthenticated } = useAuth();
-  console.log(isAuthenticated());
+  console.log("isAuth:" + isAuthenticated());
 
   return (
     <Routes>
@@ -41,6 +42,10 @@ function App() {
         <Route
           path="friends"
           element={isAuthenticated() ? <Friends /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="FAQ"
+          element={isAuthenticated() ? <Faq /> : <Navigate to="/faq" />}
         />
         <Route
           path="RestaurantManage"
