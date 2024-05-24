@@ -21,5 +21,4 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    // Add other methods as needed
 }

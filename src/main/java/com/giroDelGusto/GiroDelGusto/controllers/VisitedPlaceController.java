@@ -23,5 +23,4 @@ public class VisitedPlaceController {
         return visitedPlaceService.getAllVisitedPlaces();
     }
 
-    // Add other methods as needed
 }

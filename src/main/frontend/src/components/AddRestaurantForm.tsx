@@ -9,6 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import { getAuthToken } from "../auth/authToken";
+import { API_URL } from "../env";
 
 const AddRestaurantForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -31,15 +32,19 @@ const AddRestaurantForm: React.FC = () => {
       }
     );
     setLoading(false);
+
     if (response.data.length > 0) {
       const { lat, lon } = response.data[0];
+
       return { latitude: parseFloat(lat), longitude: parseFloat(lon) };
     }
+
     return null;
   };
 
   const handleGeocode = async () => {
     const geoData = await geocodeAddress(city + ", " + address);
+
     if (geoData) {
       setLatitude(geoData.latitude.toString());
       setLongitude(geoData.longitude.toString());
@@ -59,11 +64,11 @@ const AddRestaurantForm: React.FC = () => {
       },
       imagePath,
     };
-    console.log(restaurantData);
+
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:8080/restaurants/add",
+        url: `${API_URL}/restaurants/add`,
         data: restaurantData,
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,

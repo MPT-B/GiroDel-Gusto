@@ -21,5 +21,4 @@ public class VisitedPlaceService {
         return visitedPlaceRepository.findAll();
     }
 
-    // Add other methods as needed
 }

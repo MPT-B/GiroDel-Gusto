@@ -17,17 +17,16 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import AuthButton from "../components/AuthButton";
 import { handleAuthRequest } from "../auth/AuthRequest";
-import { setAuthHeader } from "../services/BackendService";
+import { setAuthHeader } from "../auth/authToken";
 
 const defaultTheme = createTheme();
 
 const Login = () => {
-  const [username, setUsername] = useState("CreativeUser1");
-  const [password, setPassword] = useState("kwakwa");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
   if (isAuthenticated()) {

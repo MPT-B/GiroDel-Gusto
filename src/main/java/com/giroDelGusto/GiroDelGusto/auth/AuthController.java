@@ -1,48 +1,4 @@
 package com.giroDelGusto.GiroDelGusto.auth;
-//
-//import com.giroDelGusto.GiroDelGusto.services.UserService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.ArrayList;
-//
-//@Controller
-//@RequestMapping("/auth")
-//public class AuthController {
-//
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
-//    @Autowired
-//    private JwtUtil jwtUtil;
-//    @Autowired
-//    private UserService userService;
-//
-//    @PostMapping("/login")
-//    public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginRequest loginRequest) {
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-//        );
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
-//        final String jwt = jwtUtil.generateToken(userDetails);
-//        return ResponseEntity.ok(new JwtResponse(jwt));
-//    }
-//
-//    @PostMapping("/signup")
-//    public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) {
-//        com.giroDelGusto.GiroDelGusto.models.User newUser = userService.createUser(signupRequest);
-//        UserDetails userDetails = new org.springframework.security.core.userdetails.User(newUser.getUsername(), newUser.getPassword(), new ArrayList<>());
-//        return ResponseEntity.ok(userDetails);
-//    }
-//}
-
 import com.giroDelGusto.GiroDelGusto.config.UserAuthenticationProvider;
 import com.giroDelGusto.GiroDelGusto.dtos.UserDto;
 import com.giroDelGusto.GiroDelGusto.exceptions.AppException;

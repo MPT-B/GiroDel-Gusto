@@ -1,4 +1,3 @@
-// src/components/FAQ.tsx
 import React from "react";
 import {
   Accordion,

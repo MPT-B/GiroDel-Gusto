@@ -21,5 +21,4 @@ public class UserCuisinePreferenceService {
         return userCuisinePreferenceRepository.findAll();
     }
 
-    // Add other methods as needed
 }

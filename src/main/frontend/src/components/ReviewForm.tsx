@@ -1,4 +1,3 @@
-// src/components/ReviewForm.tsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRestaurants } from "../slices/restaurantSlice";

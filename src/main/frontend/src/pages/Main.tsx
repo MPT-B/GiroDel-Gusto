@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import RestaurantCard from "../components/RestaurantCard";
 import { Grid, Typography, Box } from "@mui/material";
-import "../styles/main.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchRestaurants,

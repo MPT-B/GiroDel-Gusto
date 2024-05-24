@@ -22,6 +22,4 @@ public class LocationController {
     public List<Location> getAllLocations() {
         return locationService.getAllLocations();
     }
-
-    // Add other methods as needed
 }

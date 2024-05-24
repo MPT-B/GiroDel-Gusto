@@ -44,27 +44,3 @@ export const useFetchData = (url: string, options?: FetchOptions) => {
 
   return { data, isLoading, error };
 };
-// export const useFetchData = (url: string) => {
-//   const [data, setData] = useState(null);
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     setIsLoading(true);
-//     const token = getAuthToken();
-//     const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
-//     axios
-//       .get(url, { headers })
-//       .then((response) => {
-//         setData(response.data);
-//         setIsLoading(false);
-//       })
-//       .catch((error) => {
-//         setError(error);
-//         setIsLoading(false);
-//       });
-//   }, [url]);
-
-//   return { data, isLoading, error };
-// };

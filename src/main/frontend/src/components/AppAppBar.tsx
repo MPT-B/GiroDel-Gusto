@@ -28,6 +28,7 @@ interface AppAppBarProps {
 }
 
 function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { isAuthenticated } = useAuth();
@@ -36,7 +37,6 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
     userRole?: string;
     id: number;
   } | null>(null);
-  const dispatch = useDispatch();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

@@ -26,7 +26,7 @@ const AddFriend: React.FC<AddFriendProps> = ({
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
-
+  const headers = { Authorization: `Bearer ${getAuthToken()}` };
   const userId = useSelector((state: RootState) => state.user.id);
 
   const handleSearch = () => {
@@ -36,13 +36,8 @@ const AddFriend: React.FC<AddFriendProps> = ({
     }
 
     axios
-      .get(`${API_URL}/users/username/${searchTerm}`, {
-        headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
-        },
-      })
+      .get(`${API_URL}/users/username/${searchTerm}`, { headers })
       .then((response) => {
-        console.log(response.data);
         setSearchResults(
           response.data.filter(
             (user: any) => !currentFriends.includes(user.username)
@@ -58,12 +53,9 @@ const AddFriend: React.FC<AddFriendProps> = ({
   };
 
   const handleAddFriend = (friendId: string) => {
-    const headers = { Authorization: `Bearer ${getAuthToken()}` };
-
     axios
       .post(`${API_URL}/friends/${userId}/${friendId}`, {}, { headers })
       .then((response) => {
-        console.log(response.data);
         alert("Friend added successfully!");
         onFriendAdded();
       })

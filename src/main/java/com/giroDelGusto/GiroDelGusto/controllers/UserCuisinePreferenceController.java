@@ -23,5 +23,4 @@ public class UserCuisinePreferenceController {
         return userCuisinePreferenceService.getAllUserCuisinePreferences();
     }
 
-    // Add other methods as needed
 }

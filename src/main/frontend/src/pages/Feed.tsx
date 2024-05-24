@@ -25,7 +25,6 @@ const Feed: React.FC = () => {
     }
 
     const stompClient = connectWebSocket((message: string) => {
-      console.log("Received message: ", message);
       if (showFriendReviews) {
         dispatch(fetchFriendReviews(userId));
       } else {
