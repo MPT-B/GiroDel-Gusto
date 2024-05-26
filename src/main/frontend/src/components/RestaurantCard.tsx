@@ -40,16 +40,39 @@ export default function RestaurantCard({
     }
 
     const action = isFavorite ? "remove" : "add";
-    const url = `${API_URL}favoriteRestaurants/${action}?userId=${userId}&restaurantId=${restaurantId}`;
+    const url = `${API_URL}/favoriteRestaurants/${action}`;
     const headers = { Authorization: `Bearer ${getAuthToken()}` };
 
-    const request = isFavorite ? axios.delete : axios.post;
+    const params = {
+      userId: userId,
+      restaurantId: restaurantId,
+    };
 
-    request(url, {}, { headers })
-      .then((response) => {
-        dispatch(toggleFavorite(restaurantId));
-      })
-      .catch((error) => console.error("error", error));
+    if (isFavorite) {
+      axios
+        .delete(url, {
+          params: params,
+          headers: headers,
+        })
+        .then((response) => {
+          dispatch(toggleFavorite(restaurantId));
+        })
+        .catch((error) => console.error("error", error));
+    } else {
+      axios
+        .post(
+          url,
+          {},
+          {
+            params: params,
+            headers: headers,
+          }
+        )
+        .then((response) => {
+          dispatch(toggleFavorite(restaurantId));
+        })
+        .catch((error) => console.error("error", error));
+    }
   };
 
   return (

@@ -19,11 +19,7 @@ const initialState: RestaurantState = {
 export const fetchRestaurants = createAsyncThunk(
   "restaurant/fetchRestaurants",
   async () => {
-    const response = await axios.get(`${API_URL}/restaurants`, {
-      headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
-      },
-    });
+    const response = await axios.get(`${API_URL}/restaurants`, {});
     return response.data;
   }
 );
@@ -31,11 +27,7 @@ export const fetchRestaurants = createAsyncThunk(
 export const fetchBestInTownRestaurants = createAsyncThunk(
   "restaurant/fetchBestInTownRestaurants",
   async (city: string) => {
-    const response = await axios.get(`${API_URL}/restaurants/town/${city}`, {
-      headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
-      },
-    });
+    const response = await axios.get(`${API_URL}/restaurants/town/${city}`, {});
     return response.data;
   }
 );
@@ -43,15 +35,20 @@ export const fetchBestInTownRestaurants = createAsyncThunk(
 export const fetchFavoriteRestaurants = createAsyncThunk(
   "restaurant/fetchFavoriteRestaurants",
   async (userId: number) => {
-    const response = await axios.get(
-      `${API_URL}/favoriteRestaurants/user/${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
-        },
-      }
-    );
-    return response.data;
+    const token = getAuthToken();
+    if (token) {
+      const response = await axios.get(
+        `${API_URL}/favoriteRestaurants/user/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${getAuthToken()}`,
+          },
+        }
+      );
+      return response.data;
+    } else {
+      return "Login in to create a favorite list";
+    }
   }
 );
 

@@ -8,15 +8,16 @@ import java.io.Serializable;
 @Table(name = "friendships")
 public class Friendship implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "friendship_id")
     private Integer friendshipId;
 
     @ManyToOne
-    @JoinColumn(name = "member1_id", insertable = false, updatable = false)
+    @JoinColumn(name = "member1_id")
     private User member1;
 
     @ManyToOne
-    @JoinColumn(name = "member2_id", insertable = false, updatable = false)
+    @JoinColumn(name = "member2_id")
     private User member2;
 
     public Integer getFriendshipId() {
